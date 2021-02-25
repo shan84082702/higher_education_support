@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>高教深耕彙整平台|帳號角色管理</title>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css" />
+        <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css" />
+        <link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
+        <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css" />
+        <link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" />
+
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
+        />
+        <style>
+            .message {
+                border-style: solid;
+                border-color: gray;
+                margin-left: 20px;
+                width: auto;
+            }
+        </style>
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini">
+        <form>
+            <div class="wrapper">
+                <header class="main-header">
+                    <a href="index2.html" class="logo" style="height: 64px">
+                        <span class="logo-mini"><b></b></span> <span class="logo-lg"><b>高教深耕彙整平台</b></span>
+                    </a>
+
+                    <nav class="navbar navbar-static-top">
+                        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" style="height: 64px;">
+                            <span class="sr-only">Toggle navigation</span>
+                        </a>
+                        <div class="navbar-custom-menu">
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown user user-menu">
+                                    <a>
+                                        <span class="hidden-xs" style="font-size:20px" id="username"
+                                            >User Name&nbsp;</span
+                                        >
+                                        <span class="hidden-xs" style="font-size:16px" id="usertitle"
+                                            >User Title&nbsp;</span
+                                        >
+                                        <button type="button" class="btn" style="color:#707070" id="logout_btn">
+                                            登出
+                                        </button>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </header>
+                <aside class="main-sidebar">
+                    <section class="sidebar"><ul id="menu" class="sidebar-menu" data-widget="tree"></ul></section>
+                </aside>
+
+                <div class="content-wrapper" style="min-height: 960px;">
+                    <br />
+                    <section class="content-header">
+                        <h1 style="margin-left:20px;font-size: 30px">資料管理 <small>帳號角色管理</small></h1>
+                    </section>
+
+                    <section class="content" style="margin-left:10px;margin-right:10px;">
+                        <div
+                            style="border-radius:5px; border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;margin-top:5px;"
+                        >
+                            <form>
+                                <div class="box-body" style="margin-left:20px;margin-top:4px;margin-bottom:4px;">
+                                    <div class="form-class">
+                                        <label for="inputEmail3"> <font color="red">*</font>角色名稱： </label>
+                                        <input
+                                            type="text"
+                                            id="rolename"
+                                            placeholder="  分項主持人"
+                                            size="20%"
+                                            style="height:30px;margin-left:0.5%;margin-right:2%;"
+                                        />
+
+                                        <label for="inputEmail3">敘述：</label>
+                                        <input
+                                            type="text"
+                                            id="description"
+                                            placeholder="  敘述"
+                                            size="60%"
+                                            style="height:30px;margin-left:0.5%;margin-right:3%;"
+                                        />
+                                    </div>
+                                    <div class="form-class" style="margin-top:1.5%;">
+                                        <label for="inputEmail3"> <font color="red">*</font>權限： </label>
+                                        <label style="margin-left:0.5%;margin-right:1.5%;font-weight:normal;"
+                                            ><input type="checkbox" value="1" name="permission" /> 帳號管理</label
+                                        >
+                                        <label style="margin-right:1.5%;font-weight:normal;"
+                                            ><input type="checkbox" value="2" name="permission" /> 報告總結管理</label
+                                        >
+                                        <label style="margin-right:1.5%;font-weight:normal;"
+                                            ><input type="checkbox" value="3" name="permission" /> 資料管理</label
+                                        >
+                                        <label style="margin-right:1.5%;font-weight:normal;"
+                                            ><input type="checkbox" value="4" name="permission" /> 成果報告管理</label
+                                        >
+                                        <label style="margin-right:1.5%;font-weight:normal;"
+                                            ><input type="checkbox" value="5" name="permission" /> 檢視資料</label
+                                        >
+                                        <label style="margin-right:1.5%;font-weight:normal;"
+                                            ><input type="checkbox" value="6" name="permission" /> 診斷小組指標審查</label
+                                        >
+                                        <input type="text" id="data_id" size="10%" style="display:none;" />
+                                        <a class="btn btn-primary" id="btnadd">新增</a>
+                                        <a class="btn btn-warning" id="btnedit" style="display:none;">編輯</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div style="margin-top:20px;">
+                            <a class="btn btn-danger" style="margin-left:20px;" id="btndelete">刪除</a>
+                        </div>
+                        <div
+                            style="border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;margin-top:10px;"
+                        >
+                            <div class="box-header"><h3 class="box-title">帳號角色管理</h3></div>
+                            <div class="box-body">
+                                <table id="account_role_table" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="display:none;">ID</th>
+                                            <th><input type="checkbox" name="CheckAll" id="CheckAll" /></th>
+                                            <th>建立日期</th>
+                                            <th>角色名稱</th>
+                                            <th>敘述</th>
+                                            <th>權限</th>
+                                            <th>功能</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <footer class="main-footer">
+                    <div class="pull-right hidden-xs"><b>Version</b> 2.4.0</div>
+                    <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All
+                    rights reserved.
+                </footer>
+
+                <div class="control-sidebar-bg"></div>
+            </div>
+        </form>
+
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="bower_components/fastclick/lib/fastclick.js"></script>
+        <script src="dist/js/adminlte.min.js"></script>
+        <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+        <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+        <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+        <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script src="dist/js/demo.js"></script>
+        <script src="dist/js/cookie.js"></script>
+        <script>
+            $(document).ready(function() {
+                var token = GetCookie("token");
+                var user_name = GetCookie("user_name");
+                $("#username").text(user_name);
+                var usertitle = GetCookie("role_name");
+                $('#usertitle').text(usertitle);
+                checkToken();
+                $("#logout_btn").click(function() {
+                    $.ajax({
+                        type: "POST",
+                        url: "phpMod/signout_serve.php",
+                        async: false,
+                        dataType: "json",
+                        data: { token: token },
+                        success: function(data) {
+                            if (checkMsg(data.msg)) {
+                                delete_all_cookie();
+                            }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                        }
+                    });
+                });
+
+                $("#account_role_table").DataTable({
+                    paging: true,
+                    lengthChange: true,
+                    searching: true,
+                    ordering: true,
+                    info: true,
+                    autoWidth: false,
+                    columnDefs: [
+                        {
+                            targets: [0],
+                            visible: false
+                        }
+                    ],
+                    oLanguage: {
+                        sProcessing: "處理中...",
+                        sLengthMenu: "顯示 _MENU_ 項結果",
+                        sZeroRecords: "沒有匹配結果",
+                        sInfo: "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                        sInfoEmpty: "顯示第 0 至 0 項結果，共 0 項",
+                        sInfoFiltered: "(從 _MAX_ 項結果過濾)",
+                        sSearch: "搜尋:",
+                        oPaginate: {
+                            sFirst: "首頁",
+                            sPrevious: "上一頁",
+                            sNext: "下一頁",
+                            sLast: "尾頁"
+                        }
+                    }
+                });
+
+                var table = $("#account_role_table").DataTable();
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/get_permission.php",
+                    async: false,
+                    dataType: "json",
+                    data: { token: token },
+                    success: function(data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            for (var i = 0; i < data.out.length; i++) {
+                                var data_array = data.out[i];
+                                var id = data_array["id"];
+                                var currentDateTime = data_array["creat_time"];
+                                var rolename = data_array["role_name"];
+                                var description = data_array["description"];
+                                var permission_info = data_array["power"];
+
+                                table.row
+                                    .add([
+                                        id,
+                                        "<input type='checkbox' id='" + currentDateTime + "' name='checkbox'/>",
+                                        currentDateTime,
+                                        rolename,
+                                        description,
+                                        permission_info,
+                                        "<a class='btn btn-warning btn-xs' id='editrow'>編輯</a>"
+                                    ])
+                                    .draw();
+                            }
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/menu.php",
+                    async: false,
+                    dataType: "json",
+                    data: { token: token, page: 4, subpage: 1 },
+                    success: function(data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            var menu = data.remenu;
+                            $("#menu").append(menu);
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            });
+
+            $("#btnadd").click(function(e) {
+                insertORupdate(0);
+            });
+
+            function insertORupdate(type) {
+                var rolename = document.getElementById("rolename").value;
+                var description = document.getElementById("description").value;
+                var check = $("input[name='permission']:checked").length;
+                var canadd = true;
+                var permission_info_text = ["帳號管理", "報告總結管理", "資料管理", "成果報告管理", "檢視資料", "診斷小組指標審查"];
+                var permission_info_bool = [0, 0, 0, 0, 0, 0];
+                var token = GetCookie("token");
+                if (rolename == "" || check == 0) {
+                    canadd = false;
+                    alert("Please fill all the information");
+                }
+                if (canadd) {
+                    alert("你勾選了" + check + "個項目");
+                    var table = $("#account_role_table").DataTable();
+                    var permission_check = document.getElementsByName("permission");
+                    var permission_info = "";
+                    for (i = 0; i < 6; i++) {
+                        if (permission_check[i].checked == true) {
+                            if (permission_info == "") permission_info = permission_info_text[i];
+                            else permission_info += "," + permission_info_text[i];
+                            permission_info_bool[i] = 1;
+                            permission_check[i].checked = false;
+                        }
+                    }
+                    if (type == 0) {
+                        table.clear().draw();
+                        $.ajax({
+                            type: "POST",
+                            url: "phpMod/insert_permission.php",
+                            async: false,
+                            dataType: "json",
+                            data: {
+                                token: token,
+                                role_name: rolename,
+                                role_diecription: description,
+                                project_edit: permission_info_bool[3],
+                                strategiest_summary: permission_info_bool[1],
+                                member_manage: permission_info_bool[0],
+                                data_manage: permission_info_bool[2],
+                                view_data: permission_info_bool[4],
+                                review: permission_info_bool[5]
+                            },
+                            success: function(data) {
+                                if (!checkMsg(data.msg)) {
+                                    delete_all_cookie();
+                                }
+                                if (checkMsg(data.msg)) {
+                                    for (var i = 0; i < data.out.length; i++) {
+                                        var data_array = data.out[i];
+                                        var id = data_array["id"];
+                                        var currentDateTime = data_array["creat_time"];
+                                        var rolename = data_array["role_name"];
+                                        var description = data_array["description"];
+                                        var permission_info = data_array["power"];
+
+                                        table.row
+                                            .add([
+                                                id,
+                                                "<input type='checkbox' id='" + id + "' name='checkbox'/>",
+                                                currentDateTime,
+                                                rolename,
+                                                description,
+                                                permission_info,
+                                                "<a class='btn btn-warning btn-xs' id='editrow'>編輯</a>"
+                                            ])
+                                            .draw();
+                                    }
+                                }
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                            }
+                        });
+                    } else if (type == 1) {
+                        var id = document.getElementById("data_id").value;
+                        table.clear().draw();
+                        $.ajax({
+                            type: "POST",
+                            url: "phpMod/update_permission.php",
+                            async: false,
+                            dataType: "json",
+                            data: {
+                                token: token,
+                                sno_role: id,
+                                role_name: rolename,
+                                role_diecription: description,
+                                project_edit: permission_info_bool[3],
+                                strategiest_summary: permission_info_bool[1],
+                                member_manage: permission_info_bool[0],
+                                data_manage: permission_info_bool[2],
+                                view_data: permission_info_bool[4],
+                                review: permission_info_bool[5]
+                            },
+                            success: function(data) {
+                                if (!checkMsg(data.msg)) {
+                                    delete_all_cookie();
+                                }
+                                if (checkMsg(data.msg)) {
+                                    for (var i = 0; i < data.out.length; i++) {
+                                        var data_array = data.out[i];
+                                        var id = data_array["id"];
+                                        var currentDateTime = data_array["creat_time"];
+                                        var rolename = data_array["role_name"];
+                                        var description = data_array["description"];
+                                        var permission_info = data_array["power"];
+
+                                        table.row
+                                            .add([
+                                                id,
+                                                "<input type='checkbox' id='" + id + "' name='checkbox'/>",
+                                                currentDateTime,
+                                                rolename,
+                                                description,
+                                                permission_info,
+                                                "<a class='btn btn-warning btn-xs' id='editrow'>編輯</a>"
+                                            ])
+                                            .draw();
+                                    }
+                                    alert("編輯成功!");
+                                    $("#btnedit").hide();
+                                    $("#btnadd").show();
+                                }
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                            }
+                        });
+                    }
+                    document.getElementById("rolename").value = "";
+                    document.getElementById("description").value = "";
+                }
+            }
+
+            $("#account_role_table tbody").on("click", 'input[name="checkbox"]', function(e) {
+                var table = $("#account_role_table").DataTable();
+                var $row = $(this).closest("tr");
+                if (this.checked) {
+                    $row.addClass("selected");
+                } else {
+                    $row.removeClass("selected");
+                }
+                updateDataTableSelectAllCtrl(table);
+            });
+
+            /*全選/取消全選*/
+            $("#CheckAll").click(function() {
+                var table = $("#account_role_table").DataTable();
+                if ($("#CheckAll").prop("checked")) {
+                    $("input[name='checkbox']").each(function() {
+                        $(this).prop("checked", true);
+                        $(this)
+                            .closest("tr")
+                            .addClass("selected");
+                    });
+                } else {
+                    $("input[name='checkbox']").each(function() {
+                        $(this).prop("checked", false);
+                        $(this)
+                            .closest("tr")
+                            .removeClass("selected");
+                    });
+                }
+            });
+
+            $("#btndelete").click(function(e) {
+                var delete_bool = confirm("確定要勾選資料?");
+                if (delete_bool == true) {
+                    var token = GetCookie("token");
+                    var table = $("#account_role_table").DataTable();
+                    var $table = table.table().node();
+                    var $chkbox_all = $('tbody input[name="checkbox"]', $table);
+                    var $chkbox_checked = $('tbody input[name="checkbox"]:checked', $table);
+                    var chkbox_select_all = $('thead input[id="CheckAll"]', $table).get(0);
+                    var Data = table.rows(".selected").data();
+                    var id = "0";
+                    for (var i = 0; i < Data.length; i++) {
+                        if (id == "0") id = Data[i][0];
+                        else id += "," + Data[i][0];
+                    }
+                    table.clear().draw();
+                    $.ajax({
+                        type: "POST",
+                        url: "phpMod/delete_permission.php",
+                        async: false,
+                        dataType: "json",
+                        data: { token: token, sno_role: id },
+                        success: function(data) {
+                            if (!checkMsg(data.msg)) {
+                                delete_all_cookie();
+                            }
+                            if (checkMsg(data.msg)) {
+                                for (var i = 0; i < data.out.length; i++) {
+                                    var data_array = data.out[i];
+                                    var id = data_array["id"];
+                                    var currentDateTime = data_array["creat_time"];
+                                    var rolename = data_array["role_name"];
+                                    var description = data_array["description"];
+                                    var permission_info = data_array["power"];
+
+                                    table.row
+                                        .add([
+                                            id,
+                                            "<input type='checkbox' id='" + id + "' name='checkbox'/>",
+                                            currentDateTime,
+                                            rolename,
+                                            description,
+                                            permission_info,
+                                            "<a class='btn btn-warning btn-xs' id='editrow'>編輯</a>"
+                                        ])
+                                        .draw();
+                                }
+                            }
+                            chkbox_select_all.checked = false;
+                            chkbox_select_all.indeterminate = false;
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                        }
+                    });
+                }
+            });
+
+            function updateDataTableSelectAllCtrl(table) {
+                var $table = table.table().node();
+                var $chkbox_all = $('tbody input[name="checkbox"]', $table);
+                var $chkbox_checked = $('tbody input[name="checkbox"]:checked', $table);
+                var chkbox_select_all = $('thead input[id="CheckAll"]', $table).get(0);
+
+                if ($chkbox_checked.length === 0) {
+                    chkbox_select_all.checked = false;
+                    if ("indeterminate" in chkbox_select_all) {
+                        chkbox_select_all.indeterminate = false;
+                    }
+                } else if ($chkbox_checked.length === $chkbox_all.length) {
+                    chkbox_select_all.checked = true;
+                    if ("indeterminate" in chkbox_select_all) {
+                        chkbox_select_all.indeterminate = false;
+                    }
+                } else {
+                    chkbox_select_all.checked = true;
+                    if ("indeterminate" in chkbox_select_all) {
+                        chkbox_select_all.indeterminate = true;
+                    }
+                }
+            }
+
+            $("#account_role_table tbody").on("click", "a#editrow", function() {
+                var table = $("#account_role_table").DataTable();
+                var data = table.row($(this).parents("tr")).data();
+                document.getElementById("data_id").value = data[0];
+                document.getElementById("rolename").value = data[3];
+                document.getElementById("description").value = data[4];
+                var permission_info_bool = [0, 0, 0, 0, 0, 0];
+                var permission_info_text = ["帳號管理", "報告總結管理", "資料管理", "成果報告管理", "檢視資料", "診斷小組指標審查"];
+                var str = data[5];
+                for (var i = 0; i < 6; i++) {
+                    if (str.search(permission_info_text[i]) != -1) permission_info_bool[i] = 1;
+                }
+                var permission_check = document.getElementsByName("permission");
+                for (var i = 0; i < 6; i++) {
+                    permission_check[i].checked = false;
+                }
+                for (var i = 0; i < 6; i++) {
+                    if (permission_info_bool[i] == 1) permission_check[i].checked = true;
+                }
+                $("#btnedit").show();
+                $("#btnadd").hide();
+            });
+
+            $("#btnedit").click(function(e) {
+                var table = $("#account_role_table").DataTable();
+                insertORupdate(1);
+            });
+        </script>
+    </body>
+</html>

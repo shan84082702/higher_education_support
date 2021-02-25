@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="dist/js/cookie.js"></script>
+    <meta charset="utf-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <title>高教深耕彙整平台|成果報告管理</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="bower_components/jvectormap/jquery-jvectormap.css" rel="stylesheet" />
+    <link href="dist/css/AdminLTE.min.css" rel="stylesheet" />
+    <link href="dist/css/skins/_all-skins.min.css" rel="stylesheet" />
+    <link href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
+        rel="stylesheet" />
+    <style>
+        .message {
+            border-style: solid;
+            border-color: gray;
+            margin-left: 20px;
+        }
+
+        .modal_table {
+            border-style: solid;
+            border-color: gray;
+            border-radius: 10px;
+            height: 50px;
+        }
+
+        .popup {
+            border-style: solid;
+            border-color: gray;
+            width: auto;
+        }
+
+        .deletebutton {
+            margin-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 975px) {
+            .message {
+                width: auto;
+                margin-right: 20px;
+            }
+        }
+
+        .plus-minus-input {
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
+
+        .plus-minus-input .input-group-field {
+            text-align: center;
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+            padding: 1rem;
+        }
+
+        .plus-minus-input .input-group-field::-webkit-inner-spin-button,
+        .plus-minus-input .input-group-field ::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .plus-minus-input .input-group-button .circle {
+            border-radius: 50%;
+            padding: 0.25em 0.8em;
+        }
+
+        textarea {
+            padding: 0;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <a class="logo" href="index.html" style="height: 64px"><span class="logo-mini"><b></b></span> <span
+                    class="logo-lg"><b>高教深耕彙整平台</b></span></a>
+            <nav class="navbar navbar-static-top">
+                <a class="sidebar-toggle" data-toggle="push-menu" href="#" role="button" style="height: 64px;"><span
+                        class="sr-only">Toggle navigation</span></a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a>
+                                <span class="hidden-xs" id="username" style="font-size:20px">User Name&nbsp;</span>
+                                <span class="hidden-xs" style="font-size:16px" id="usertitle">User Title&nbsp;</span>
+                                <button class="btn" id="logout_btn" style="color:#707070" type="button">
+                                    登出
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <ul class="sidebar-menu" data-widget="tree" id="menu"></ul>
+            </section>
+        </aside>
+        <div class="content-wrapper" style="min-height: 960px;">
+            <br />
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <a style="font-size: 30px;color: #000000">報告書管理</a>
+                        <a style="margin-left:20px;font-size: 24px;color:gray;">成果報告管理</a>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-6"><u style="font-size: 24px;color:gray;">成果報告書-編輯</u></div>
+                        <div class="col-sm-6" style="text-align: right">
+                            <button class="btn btn-info btn-sm" data-target="#modal-table" data-toggle="modal"
+                                id="detail" type="button">
+                                審核紀錄
+                            </button>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </section>
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row" style="border-style:solid;border-color:gray">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align:right">
+                                    <a style="color:gray;font-size: 22px">報告書狀態 :</a>
+                                    <a id="review_state" style="color:gray;font-size: 22px"></a>
+                                </div>
+                            </div>
+                            <form enctype="multipart/form-data" id="fileinfo" method="post" name="fileinfo">
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">活動或課程名稱:</a>
+                                    </div>
+                                    <div class="col-sm-6"><input disabled id="pname" type="text" style="width:100%" />
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">活動執行期限:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input disabled id="estimated_date" style="width:100%" type="text" />
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">主軸/分項/策略名稱:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input disabled id="opt_name" style="width:100%" type="text" />
+                                    </div>
+                                </div>
+                                <br />
+                                <!-- <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">部定指標類型:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input disabled id="edu_name" style="width:100%" type="text" />
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">部定指標說明:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input disabled id="edu_detail" style="width:100%" type="text" />
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">部定指標項目:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input disabled id="edusub_name" style="width:100%" type="text" />
+                                    </div>
+                                </div> -->
+                                <br />
+                                <div class="row act_date_row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">活動日期:</a>
+                                    </div>
+                                    <div class="col-sm-6 act_date">
+                                        <input type="date" />
+                                        <button class="button hollow circle minus_btn" data-field="quantity"
+                                            data-quantity="minus" type="button">
+                                            <i aria-hidden="true" class="fa fa-minus"></i>
+                                        </button>
+                                        <button class="button hollow circle plus_btn" data-field="quantity"
+                                            data-quantity="plus" type="button">
+                                            <i aria-hidden="true" class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">活動地點:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input id="activate_location" name="activate_location" style="width:100%"
+                                            type="text" />
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">參與人數:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input id="paricipant_number" name="paricipant_number" style="width:80%"
+                                            type="text" />
+                                        <span>人</span>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">活動經費:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input id="cost" name="cost" style="width:80%" type="text" />
+                                        <span>元</span>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">是否依據報部計畫書中甘特圖預定月份執行:</a>
+                                    </div>
+                                    <div class="col-sm-6" style="padding-top:10px">
+                                        <input name="isongante" type="radio" value="1" />是&nbsp;&nbsp;
+                                        <input name="isongante" type="radio" value="0" />否
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a id="ininresulf"
+                                            style="color:#000000; font-size:18px">是否依據報部計畫書中撰寫之質量化指標執行:</a>
+                                    </div>
+                                    <div class="col-sm-6" style="padding-top:10px">
+                                        <input name="isinresulf" type="radio" value="1" />是&nbsp;&nbsp;
+                                        <input name="isinresulf" type="radio" value="0" />否
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">活動簡述:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <textarea cols="70" id="description" name="description" rows="4"></textarea>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">無法依預定月份執行，請說明原因:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <textarea style="width:100%" id="reason" name="reason" rows="4"></textarea>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row " id="q_row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <!-- <a style="color:#000000; font-size:18px">執行內容與管考指標:</a> -->
+                                    </div>
+                                    <div class="q_col col-sm-9">
+
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">是否與其他主軸活動進行成效倍增:</a>
+                                    </div>
+                                    <div class="col-sm-6" style="padding-top:10px">
+                                        <input id="nocooper" name="cooperation_project" type="radio" value="0" /><label
+                                            for="nocooper">否</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input name="cooperation_project" type="radio"
+                                            value="1" /><label>是</label>&nbsp;&nbsp;
+                                        <input id="cooperation_project_text" style="width: 50%" type="text" />
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">辦理此活動著重之面向:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input name="target1" type="checkbox"
+                                            value="0" />&nbsp;教師面&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input name="target2" type="checkbox"
+                                            value="1" />&nbsp;學生面&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input name="target3" type="checkbox"
+                                            value="2" />&nbsp;課程面&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input name="target4" type="checkbox"
+                                            value="3" />&nbsp;整體面(特色、資源)&nbsp;&nbsp;&nbsp;&nbsp;
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">檢討與建議:</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <textarea cols="70" id="recommendations" name="recommendations"
+                                            rows="4"></textarea>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">活動簽到:</a>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <a id="sign_path"></a>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input accept="image/jpeg,application/pdf" name="sig" type="file" />
+                                    </div>
+
+                                </div>
+                                <br />
+                                <div class="row img_row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">活動照片:</a>
+                                    </div>
+                                    <div class="col-sm-9 act_img">
+                                        <input accept="image/*" id="upload-pic" name="act_img1" style="display: inline"
+                                            type="file" />
+                                        <span>圖片說明 : </span>
+                                        <input type="text" name="img_des1" style="width:30%" />&nbsp;
+                                        <button class="button hollow circle plus_btn_img" data-field="quantity"
+                                            data-quantity="plus" type="button">
+                                            <i aria-hidden="true" class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <a style="color:#000000; font-size:18px">附件(議程):</a>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <a id="annex_path"></a>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input accept="image/jpeg,application/pdf" name="annex" type="file" />
+                                    </div>
+
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-sm-6" style="text-align:right">
+                                        <input class="btn btn-success" id="save_btn" style="width:50%" type="submit"
+                                            value="儲存" />
+                                    </div>
+                                    <div class="col-sm-3" style="text-align:right">
+                                        <button class="btn btn-warning" id="send_project" type="button">
+                                            送審
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-table">
+        <div class="modal-dialog" style="width:1000px">
+            <div class="container-fluid">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color:#5991C9">
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" style="color:white">審核紀錄</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box-body">
+                            <div class="row modal_table" id="msgandsummit">
+                                <div class="col-sm-9" style="margin-bottom:2%">
+                                    <span style="font-size:24px">建議 :</span>
+                                    <input id="recomand" size="80" type="text" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" id="send_msg" style="margin-top:3%" type="button">
+                                        送出
+                                    </button>
+                                    <button class="btn btn-warning" id="send_access" style="margin-top:3%"
+                                        type="button">
+                                        審核通過
+                                    </button>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row" style="border-style:solid;border-color:#707070;">
+                                <div style="margin-left: 2%;margin-right: 2%;margin-top: 2%;margin-bottom: 2%">
+                                    <table class="table table-bordered table-striped" id="example2">
+                                        <thead>
+                                            <tr>
+                                                <th>送件時間</th>
+                                                <th>送件者</th>
+                                                <th>收件者</th>
+                                                <th>額外訊息</th>
+                                                <th>狀態</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr> -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" type="button">關閉</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-sidebar-bg"></div>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="dist/js/adminlte.min.js"></script>
+    <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="bower_components/chart.js/Chart.js"></script>
+    <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="dist/js/demo.js"></script>
+    <!-- Include dependencies -->
+    <script type="text/javascript" src="plugins/docgen/libs/base64.js"></script>
+    <script type="text/javascript" src="plugins/docgen/libs/jszip/jszip.js"></script>
+    <script type="text/javascript" src="plugins/docgen/libs/jszip/jszip-load.js"></script>
+    <script type="text/javascript" src="plugins/docgen/libs/jszip/jszip-inflate.js"></script>
+    <script type="text/javascript" src="plugins/docgen/js/docxgen.js"></script>
+    <script>
+        $("#example2").DataTable({
+            paging: true,
+            lengthChange: true,
+            searching: true,
+            ordering: false,
+            info: true,
+            autoWidth: false,
+            oLanguage: {
+                sProcessing: "處理中...",
+                sLengthMenu: "顯示 _MENU_ 項結果",
+                sZeroRecords: "沒有匹配結果",
+                sInfo: "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                sInfoEmpty: "顯示第 0 至 0 項結果，共 0 項",
+                sInfoFiltered: "(從 _MAX_ 項結果過濾)",
+                sSearch: "搜尋:",
+                oPaginate: {
+                    sFirst: "首頁",
+                    sPrevious: "上一頁",
+                    sNext: "下一頁",
+                    sLast: "尾頁"
+                }
+            }
+        });
+
+        $(document).ready(function () {
+            $("#send_project").hide();
+            $("#detail").hide();
+            var opt = {
+                oLanguage: {
+                    sProcessing: "處理中...",
+                    sLengthMenu: "顯示 _MENU_ 項結果",
+                    sZeroRecords: "沒有匹配結果",
+                    sInfo: "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                    sInfoEmpty: "顯示第 0 至 0 項結果，共 0 項",
+                    sInfoFiltered: "(從 _MAX_ 項結果過濾)",
+                    sSearch: "搜尋:",
+                    oPaginate: {
+                        sFirst: "首頁",
+                        sPrevious: "上一頁",
+                        sNext: "下一頁",
+                        sLast: "尾頁"
+                    }
+                }
+            };
+            var table = $("#example2").DataTable();
+            var token = GetCookie("token");
+            var pid = GetCookie("pid");
+            var t = $("#example1").DataTable(opt);
+            var user_name = GetCookie("user_name");
+            $("#username").text(user_name);
+            var usertitle = GetCookie("role_name");
+            $("#usertitle").text(usertitle);
+            $("#cooperation_project_text").val("請輸入其他策略名稱");
+            $.ajax({
+                type: "POST",
+                url: "phpMod/menu.php",
+                async: false, ///非同步執行
+                dataType: "json",
+                data: {
+                    token: token,
+                    page: 3,
+                    subpage: 2
+                },
+                success: function (data) {
+                    if (checkMsg(data.msg)) {
+                        var menu = data.remenu;
+                        $("#menu").append(menu);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+
+            var results;
+            var change_img;
+            $.ajax({
+                type: "POST",
+                url: "phpMod/find_paper_detail_serve.php",
+                async: false, ///非同步執行
+                dataType: "json",
+                data: {
+                    token: token,
+                    pid: pid
+                },
+                success: function (data) {
+                    if (checkMsg(data.msg)) {
+                        checkToken(data.msg);
+                        console.log(data.outt);
+                        console.log(data.img);
+                        change_img = data.img;
+                        $("#review_state").text(data.outt.review_state);
+                        if (data.outt.review_state == "審核完成") {
+                            $("#send_project").hide();
+                            $("#msgandsummit").hide();
+                        }
+                        var pname = data.outt.pname;
+                        $("#pname").val(pname);
+                        var estimated_date = data.outt.estimated_date;
+                        $("#estimated_date").val(estimated_date);
+                        var opt_name = data.outt.opt_name;
+                        $("#opt_name").val(opt_name);
+                        var edu_name = data.outt.edu_name;
+                        $("#edu_name").val(edu_name);
+                        var edu_detail = data.outt.edu_detail;
+                        $("#edu_detail").val(edu_detail);
+                        var edusub_name = data.outt.edusub_name;
+                        $("#edusub_name").val(edusub_name);
+                        var activate_date = data.outt.activate_date;
+                        if (activate_date == null) {
+                            activate_date = "2018-01-01";
+                        }
+                        activate_date = activate_date.split(",");
+                        var act_date_length = activate_date.length;
+                        for (var i = 1; i < act_date_length; i++) {
+                            $(".act_date_row").after(
+                                '<div class="row row2"><div class="col-sm-3" style="text-align:right"><\/div><div class="col-sm-6 act_date" ><input type="date" class="date" >&nbsp;<button type="button" class="button hollow circle minus_btn" data-quantity="minus" data-field="quantity"><i class="fa fa-minus" aria-hidden="true"><\/i><\/button> <\/div><\/div>'
+                            );
+                        }
+                        $(".act_date").children("input").each(function (index) {
+                            $(this).val(activate_date[index]);
+                        });
+                        var activate_location = data.outt.activate_location;
+                        $("#activate_location").val(activate_location);
+                        var paricipant_number = data.outt.paricipant_number;
+                        $("#paricipant_number").val(paricipant_number);
+                        var cost = data.outt.cost;
+                        $("#cost").val(cost);
+                        var isongante = data.outt.isongante;
+                        var isinresulf = data.outt.isinresulf;
+                        if (isongante == 0) {
+                            $("input:radio[name=isongante]")
+                                .filter("[value=0]")
+                                .prop("checked", true);
+                            //$("input:radio[name=isinresulf]").prop("disabled", false);
+                            // if (isinresulf == 0)
+                            //     $("input:radio[name=isinresulf]").filter("[value=0]").prop("checked", true);
+                            // else
+                            //     $("input:radio[name=isinresulf]").filter("[value=1]").prop("checked", true);
+                        } else if (isongante == 1) {
+                            $("input:radio[name=isongante]").filter("[value=1]").prop("checked", true);
+                            //$("input:radio[name=isinresulf]").prop("disabled", true);
+                        }
+                        if (isinresulf == 0) {
+                            $("input:radio[name=isinresulf]")
+                                .filter("[value=0]")
+                                .prop("checked", true);
+                            //$("input:radio[name=isinresulf]").prop("disabled", false);
+                            // if (isinresulf == 0)
+                            //     $("input:radio[name=isinresulf]").filter("[value=0]").prop("checked", true);
+                            // else
+                            //     $("input:radio[name=isinresulf]").filter("[value=1]").prop("checked", true);
+                        } else if (isinresulf == 1) {
+                            $("input:radio[name=isinresulf]").filter("[value=1]").prop("checked", true);
+                            //$("input:radio[name=isinresulf]").prop("disabled", true);
+                        }
+                        var description = data.outt.description;
+                        $("#description").val(description);
+                        $("#reason").val(data.outt.reason);
+                        results = JSON.parse(data.outt.results);
+                        console.log(results.length)
+                        if (results[0]["qid"] != "") {
+                            for (var i = results.length - 1; i >= 0; --i) {
+                                console.log(results[i]["type"], results[i]["qid"]);
+                                if (results[i]["type"] == 0) {
+                                    if (results[i]["result"] == null)
+                                        results[i]["result"] = "";
+                                    console.log(results[i]);
+                                    $("#q_row").after(
+                                        '<div class="row q_row">' +
+                                        '<div class="col-sm-3" style="text-align:right">' +
+                                        '<a   style="color:#000000; font-size:18px" >管考指標 : <\/a>' +
+                                        "<\/div>" +
+                                        '<div class="q_col col-sm-6">' +
+                                        '<a  class="question" style="color:#000000; font-size:18px" ><\/a></div></div><br/>' +
+                                        "<div class='row'><div class='col-sm-3' style='text-align:right'>" +
+                                        '<a   style="color:#000000; font-size:18px" >衡量基準 : <\/a>' +
+                                        "<\/div>" +
+                                        '<div class=" col-sm-6">' +
+                                        '<a  class="edu_name2" style="color:#000000; font-size:18px" ><\/a></div></div><br/>' +
+                                        "<div class='row'><div class='col-sm-3' style='text-align:right'>" +
+                                        '<a   style="color:#000000; font-size:18px" >執行內容 : <\/a></div><div class="col-sm-6"><textarea style="width:100%" rows="4" class="result" id="' + results[i]["qid"] + '">' + results[i]["result"] + '<\/textarea></div></div><br/>'
+                                    );
+                                } else {
+                                    if (results[i]['result'] != null) {
+                                        var filepath = results[i]['result'];
+                                        var filename = filepath.split('/');
+                                        filename = filename[filename.length - 1];
+                                        $("#q_row").after(
+                                            '<div class="row q_row">' +
+                                            '<div class="col-sm-3" style="text-align:right">' +
+                                            '<a   style="color:#000000; font-size:18px" >管考指標 : <\/a>' +
+                                            "<\/div>" +
+                                            '<div class="q_col col-sm-6">' +
+                                            '<a  class="question" style="color:#000000; font-size:18px" ><\/a></div></div><br/>' +
+                                            "<div class='row'><div class='col-sm-3' style='text-align:right'>" +
+                                            '<a   style="color:#000000; font-size:18px" >衡量基準 : <\/a>' +
+                                            "<\/div>" +
+                                            '<div class=" col-sm-6">' +
+                                            '<a  class="edu_name2" style="color:#000000; font-size:18px" ><\/a></div></div><br/>' +
+                                            "<div class='row'><div class='col-sm-3' style='text-align:right'>" +
+                                            '<a   style="color:#000000; font-size:18px" >執行內容 : <\/a></div><div class="col-sm-6"><a href="' + filepath +
+                                            '">' + filename + '</a><input type="file" name="q' + results[i]["qid"] + '"/></div></div><br/>'
+
+                                        );
+                                    } else {
+                                        $("#q_row").after(
+                                            '<div class="row q_row">' +
+                                            '<div class="col-sm-3" style="text-align:right">' +
+                                            '<a   style="color:#000000; font-size:18px" >管考指標 : <\/a>' +
+                                            "<\/div>" +
+                                            '<div class="q_col col-sm-6">' +
+                                            '<a  class="question" style="color:#000000; font-size:18px" ><\/a></div></div><br/>' +
+                                            "<div class='row'><div class='col-sm-3' style='text-align:right'>" +
+                                            '<a   style="color:#000000; font-size:18px" >衡量基準 : <\/a>' +
+                                            "<\/div>" +
+                                            '<div class=" col-sm-6">' +
+                                            '<a  class="edu_name2" style="color:#000000; font-size:18px" ><\/a></div></div><br/>' +
+                                            "<div class='row'><div class='col-sm-3' style='text-align:right'>" +
+                                            '<a   style="color:#000000; font-size:18px" >執行內容 : <\/a></div><div class="col-sm-6"><input type="file" name="q' + results[i]["qid"] + '"/></div></div><br/>'
+
+                                        );
+                                    }
+
+                                }
+
+                            }
+                            $(".question").each(function (index) {
+                                $(this).text(results[index]["edu_name2"]);
+                            });
+                            $(".edu_name2").each(function (index) {
+                                $(this).text(results[index]["question"]);
+                            })
+
+                        } else {
+                            $(".q_row").hide();
+                            results = " ";
+                        }
+
+                        var cooperation_project = data.outt.cooperation_project;
+                        if (cooperation_project == "" || cooperation_project == null) {
+                            $("input:radio[name=cooperation_project]")
+                                .filter("[value=0]")
+                                .prop("checked", true);
+                        } else {
+                            $("input:radio[name=cooperation_project]")
+                                .filter("[value=1]")
+                                .prop("checked", true);
+                            $("#cooperation_project_text").val(cooperation_project);
+                        }
+
+                        var target = data.outt.target;
+                        var target_length = data.outt.target.length
+                        console.log(data.outt.target.length);
+                        if (target_length > 0) {
+                            for (var i = 0; i < target_length; i++) {
+                                if (target[i] == 0)
+                                    $("input:checkbox[name=target1]")
+                                        .filter("[value=0]")
+                                        .prop("checked", true);
+                                if (target[i] == 1)
+                                    $("input:checkbox[name=target2]")
+                                        .filter("[value=1]")
+                                        .prop("checked", true);
+                                if (target[i] == 2)
+                                    $("input:checkbox[name=target3]")
+                                        .filter("[value=2]")
+                                        .prop("checked", true);
+                                if (target[i] == 3)
+                                    $("input:checkbox[name=target4]")
+                                        .filter("[value=3]")
+                                        .prop("checked", true);
+                            }
+                        }
+                        $("#recommendations").text(data.outt.recommendations);
+
+
+                        if (data.outt.sign_path != undefined) {
+                            var sign_path = data.outt.sign_path;
+                            var sign_name = sign_path.split("/");
+                            sign_name = sign_name[sign_name.length - 1];
+                            console.log(sign_name);
+                            $("#sign_path").text(sign_name);
+                            $("#sign_path").attr("href", sign_path);
+                        }
+
+                        if (data.outt.annex_path != undefined) {
+                            var annex_path = data.outt.annex_path;
+                            if (annex_path != "" && typeof annex_path != null && annex_path != undefined) {
+                                var annex_name = annex_path.split("/");
+                                annex_name = annex_name[annex_name.length - 1];
+                            } else {
+                                annex_name = "";
+                            }
+                            console.log(annex_name);
+                            $("#annex_path").text(annex_name);
+                            $("#annex_path").attr("href", annex_path);
+                        }
+
+
+                        var img_arr_length = data.img.length;
+                        if (data.img[0]["img_path"] != undefined) {
+                            for (var i = 0; i < img_arr_length; i++) {
+                                $(".img_row").after(
+                                    '<div class="row img_row2">' +
+                                    '<br><div class="col-sm-3" style="text-align:right">' +
+                                    "<\/div>" +
+                                    '<div class="col-sm-9 act_img" >' +
+                                    '<img  class="img_src" width="30%">' +
+                                    '<span style="padding-left:2%">圖片說明 : </span><input class="img_dec" type="text" style="width:30%" />&nbsp;&nbsp;' +
+                                    '<button type="button" class="button hollow circle minus_btn_img" data-quantity="minus" data-field="quantity" style="margin-top:10%">' +
+                                    '<i class="fa fa-minus" aria-hidden="true"><\/i>' +
+                                    "<\/button><\/div>" +
+                                    "<\/div>"
+                                );
+                            }
+                            $(".img_src").each(function (index) {
+                                $(this).attr("src", data.img[index]["img_path"]);
+                                $(this).attr("id", data.img[index]["mid"]);
+                            });
+                            $(".img_dec").each(function (index) {
+                                $(this).val(data.img[index]["img_des"]);
+                            });
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+
+            // $("input:radio[name=isongante]").on("change", function() {
+            //     if ($("input[name=isongante]:checked").val() == 0)
+            //         $("input:radio[name=isinresulf]").prop("disabled", false);
+            //     if ($("input[name=isongante]:checked").val() == 1)
+            //         $("input:radio[name=isinresulf]").prop("disabled", false);
+            // });
+
+            $(document).on("click", ".plus_btn", function (event) {
+                $(this)
+                    .parents(".act_date_row")
+                    .after(
+                        '<div class="row row2"><div class="col-sm-3" style="text-align:right"><\/div><div class="col-sm-6 act_date" ><input type="date"  >&nbsp;<button type="button" class="button hollow circle minus_btn" data-quantity="minus" data-field="quantity"><i class="fa fa-minus" aria-hidden="true"><\/i><\/button> <\/div><\/div>'
+                    );
+            });
+
+            $(document).on("click", ".minus_btn", function (event) {
+                $(this)
+                    .parents(".row2")
+                    .remove();
+            });
+
+            var count = 1;
+            $(document).on("click", ".plus_btn_img", function (event) {
+                count++;
+                $(this)
+                    .parents(".img_row")
+                    .after(
+                        '<div class="row img_row2">' +
+                        '<br><div class="col-sm-3" style="text-align:right">' +
+                        '<\/div>' +
+                        '<div class="col-sm-9 act_img" >' +
+                        '<input accept="image/*" type="file" style="display:inline" name=act_img' +
+                        count +
+                        '/>&nbsp;' +
+                        '<span>圖片說明 : </span>' +
+                        '<input type="text" name="img_des' + count + '" style="width:30%" />&nbsp;&nbsp;' +
+                        '<button type="button" class="button hollow circle minus_btn_img" data-quantity="minus" data-field="quantity">' +
+                        '<i class="fa fa-minus" aria-hidden="true"><\/i>' +
+                        '<\/button>' +
+                        '<\/div>' +
+                        '<\/div>'
+                    );
+            });
+
+
+
+
+            var pic_del = [];
+            var del_counter = 0;
+            $(document).on("click", ".minus_btn_img", function (event) {
+                pic_del[del_counter] = $(this)
+                    .parents(".img_row2")
+                    .children(".act_img")
+                    .children()
+                    .attr("id");
+                del_counter++;
+                $(this)
+                    .parents(".img_row2")
+                    .remove();
+            });
+
+            $("#logout_btn").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/signout_serve.php",
+                    async: false, ///非同步執行
+                    dataType: "json",
+                    data: {
+                        token: token
+                    },
+                    success: function (data) {
+                        if (checkMsg(data.msg)) {
+                            DelCookie("token", domain);
+                            DelCookie("name", domain);
+                            document.location.href = "login.html";
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            });
+
+            $("#save_btn").click(function () {
+                var delimg = pic_del.join(",");
+                var dates_arr = [];
+                $(".act_date")
+                    .children("input")
+                    .each(function (index) {
+                        dates_arr[index] = $(this).val();
+                    });
+                var act_dates = dates_arr.join(",");
+                activate_location = $("#activate_location").val();
+                paricipant_number = $("#paricipant_number").val();
+                cost = $("#cost").val();
+                isongante = $("input:radio[name=isongante]:checked").val();
+                isinresulf = $("input:radio[name=isinresulf]:checked").val();
+                //alert(isinresulf);
+                description = $("#description").val();
+                reason = $("#reason").val();
+                var result = [];
+                var qid = [];
+                $(".result").each(function (index) {
+                    result[index] = $(this).val();
+                    qid[index] = $(this).attr('id');
+                });
+                var q_result = JSON.stringify({
+                    result: result,
+                    qid: qid
+                });
+                var test = JSON.parse(q_result);
+                console.log(test["qid"][0]);
+
+
+                var target_arr = [];
+                $("input[type='checkbox']:checked").each(function(index){
+                    target_arr[index] = $(this).val();
+                });
+                if(target_arr.length>0){
+                    target = target_arr.join(',');
+                }
+                else{
+                    target = -1;
+                } 
+                recommendations = $("#recommendations").val();
+                var setcooperation_project = "";
+                if ($("input:radio[name=cooperation_project]:checked").val() == 0) {
+                    setcooperation_project = "";
+                } else {
+                    setcooperation_project = $("#cooperation_project_text").val();
+                }
+                var img_dec = [];
+                $("input[name^='img_des']").each(function (index) {
+                    img_dec[index] = $(this).val();
+                    //alert(img_dec[index]);
+                });
+                img_dec = JSON.stringify(img_dec);
+                //alert(img_dec);
+
+                $(".img_dec").each(function (index) {
+                    change_img[index]['mid'] = $(this).parents(".img_row2").children(".act_img").children().attr("id");
+                    change_img[index]['img_des'] = $(this).val();
+                });
+                change_img = JSON.stringify(change_img);
+                //alert(change_img);
+                if (target == undefined) {
+                    target = -1;
+                }
+                if (isongante == undefined) {
+                    isongante = -1;
+                }
+                if (isinresulf == undefined) {
+                    isinresulf = -1;
+                }
+                var form = document.forms.namedItem("fileinfo");
+                form.addEventListener(
+                    "submit",
+                    function (ev) {
+                        oData = new FormData(form);
+                        oData.append("pid", pid);
+                        oData.append("q_result", q_result);
+                        oData.append("activate_date", act_dates);
+                        oData.append("token", token);
+                        oData.append("delimg", delimg);
+                        oData.append("activate_location", activate_location);
+                        oData.append("paricipant_number", paricipant_number);
+                        oData.append("cost", cost);
+                        oData.append("isongante", isongante);
+                        oData.append("isinresulf", isinresulf);
+                        oData.append("CustomField", "This is some extra data");
+                        oData.append("description", description);
+                        oData.append("reason", reason);
+                        oData.append("target", target);
+                        oData.append("recommendations", recommendations);
+                        oData.append("setcooperation_project", setcooperation_project);
+                        oData.append("img_description", img_dec);
+                        oData.append("change_img", change_img);
+                        var oReq = new XMLHttpRequest();
+                        oReq.open("POST", "phpMod/update_paper_detail_serve.php", true);
+
+                        oReq.onload = function (oEvent) {
+                            if (oReq.status == 200) {
+                                alert("編輯成功，請瀏覽詳細資料是否正確，如資料正確再儲存報告書");
+                                // alert(isongante);
+                                // alert(isinresulf);
+                                document.location.href = "result3.html";
+                            } else {
+
+                            }
+                        };
+
+                        oReq.send(oData);
+
+                        ev.preventDefault();
+                    },
+                    false
+                );
+            });
+
+            $("#detail").click(function () {
+                table.clear();
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/letter_get_list.php",
+                    async: false, ///非同步執行
+                    dataType: "json",
+                    data: {
+                        token: token,
+                        sno_option_projects: pid
+                    },
+                    success: function (data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            if (data.issupervisor != 1) {
+                                $("#send_access").hide();
+                            }
+                            for (var i = 0; i < data.out.length; i++) {
+                                var data_array = data.out;
+                                var created_at = data_array[i]["created_at"];
+                                var source = data_array[i]["source"];
+                                var exmsg = data_array[i]["exmsg"];
+                                var type = data_array[i]["type"];
+                                var target = data_array[i]["target"];
+
+                                table.row.add([created_at, source, target, exmsg, type]).draw(false);
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            });
+            // $("#send_project").click(function () {
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "phpMod/letter_submit.php",
+            //         async: false, ///非同步執行
+            //         dataType: "json",
+            //         data: {
+            //             token: token,
+            //             sno_option_projects: pid
+            //         },
+            //         success: function (data) {
+            //             if (!checkMsg(data.msg)) {
+            //                 delete_all_cookie();
+            //             }
+            //             if (checkMsg(data.msg)) {
+            //                 document.location.href = "result.html";
+            //             }
+            //         },
+            //         error: function (XMLHttpRequest, textStatus, errorThrown) {
+            //             alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+            //         }
+            //     });
+            // });
+            //送出額外訊息
+            $("#send_msg").click(function () {
+                var message = $("#recomand").val();
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/letter_record.php",
+                    async: false, ///非同步執行
+                    dataType: "json",
+                    data: {
+                        token: token,
+                        sno_option_projects: pid,
+                        message: message
+                    },
+                    success: function (data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            alert("訊息送出");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+                table.clear();
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/letter_get_list.php",
+                    async: false, ///非同步執行
+                    dataType: "json",
+                    data: {
+                        token: token,
+                        sno_option_projects: pid
+                    },
+                    success: function (data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            if (data.issupervisor != 1) {
+                                $("#send_access").hide();
+                            }
+                            for (var i = 0; i < data.out.length; i++) {
+                                var data_array = data.out;
+                                var created_at = data_array[i]["created_at"];
+                                var source = data_array[i]["source"];
+                                var exmsg = data_array[i]["exmsg"];
+                                var type = data_array[i]["type"];
+                                var target = data_array[i]["target"];
+
+                                table.row.add([created_at, source, target, exmsg, type]).draw(false);
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            });
+
+            $("#send_access").click(function () {
+                var message = $("#recomand").val();
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/letter_access.php",
+                    async: false, ///非同步執行
+                    dataType: "json",
+                    data: {
+                        token: token,
+                        sno_option_projects: pid,
+                        message: message
+                    },
+                    success: function (data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            document.location.href = "result.html";
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+                table.clear();
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/letter_get_list.php",
+                    async: false, ///非同步執行
+                    dataType: "json",
+                    data: {
+                        token: token,
+                        sno_option_projects: pid
+                    },
+                    success: function (data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            if (data.issupervisor != 1) {
+                                $("#send_access").hide();
+                            }
+                            for (var i = 0; i < data.out.length; i++) {
+                                var data_array = data.out;
+                                var created_at = data_array[i]["created_at"];
+                                var source = data_array[i]["source"];
+                                var exmsg = data_array[i]["exmsg"];
+                                var type = data_array[i]["type"];
+                                var target = data_array[i]["target"];
+
+                                table.row.add([created_at, source, target, exmsg, type]).draw(false);
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            });
+
+
+
+        });
+    </script>
+</body>
+
+</html>

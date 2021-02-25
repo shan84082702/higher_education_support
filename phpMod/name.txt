@@ -1,0 +1,406 @@
+get_permission		取得權限
+=>token
+=>msg,out[[id],[creat_time],[role_name],[description],[power]]
+------------------------------------
+insert_permission	增加權限
+=>token,role_name,role_diecription,project_edit,strategiest_summary,member_manage,data_manage
+=>msg,out[[id],[creat_time],[role_name],[description],[power]]
+------------------------------------
+update_permission	更新權限
+=>token,sno_role,role_name,role_diecription,project_edit,strategiest_summary,member_manage,data_manage
+=>msg,out[[id],[creat_time],[role_name],[description],[power]]
+------------------------------------
+delete_permission	刪除權限
+=>token,sno_role 1,2...
+=>msg,out[[id],[creat_time],[role_name],[description],[power]]
+------------------------------------
+------------------------------------
+spindles_get_year	主軸取得年份
+=>token
+=>msg,out[year]
+------------------------------------
+spindles_get_role	主軸取得角色
+=>token
+=>msg,out[role_id],[name]
+------------------------------------
+spindles_get_people	主軸取得人物名稱
+=>token,role_id
+=>msg,out[[sno_members],[sno_roles],[name]]
+------------------------------------
+spindles_get_list	主軸取得列表
+=>token,year
+=>msg,out[[son_id],[year],[main_oder],[main_name],[supervisor_id],[supervisor],[role_id],[[sno_option_main],[member_id],[name],[role_id]]]
+------------------------------------
+spindles_insert		主軸新增
+=>token,option_main_order,name,supervisor_main,activate_yyy,sno_member[[],[],[]...]
+=>msg
+------------------------------------
+spindles_update		主軸更新
+=>token,option_main_order,name,supervisor_main,sno_option_main,sno_member[[],[],[]...]
+=>msg
+------------------------------------
+spindles_delete		主軸刪除
+=>token,main  1,2...
+=>msg
+------------------------------------
+spindles_edit_list	主軸編輯列表
+=>token,year,main_pk
+=>msg,out[[son_id],[year],[main_oder],[main_name],[supervisor_id],[supervisor],[role_id],[[sno_option_main],[member_id],[name],[role_id]]]
+------------------------------------
+------------------------------------
+spindles_get_role	分項取得角色
+=>token
+=>msg,out[role_id]
+---------------------------------------------
+spindles_get_people	分項取得人物名稱
+=>token,role_id
+=>msg,out[[sno_members],[sno_roles],[name]]
+------------------------------------
+suboption_get_spindles	分項獲取主軸名稱
+=>token,year
+=>msg,out[main_pk,main_name]
+------------------------------------
+suboption_get_list	分項取得列表
+=>token,year
+=>msg,out[[sub_pk],[main_id],[sub_id],[sub_name],[supervisor],[supervisor_id],[role_id],[[sno_option_sub],[member_id],[name],[role_id]]]
+------------------------------------
+suboption_insert	分項新增
+=>token,option_sub_order,name,supervisor_sub,sno_option_main,sno_member[[],[],[]...]
+=>msg
+------------------------------------
+suboption_update	分項更新
+=>token,option_sub_order,name,supervisor_sub,sub_pk,sno_member[[],[],[]...]
+=>msg
+------------------------------------
+suboption_delete	分項刪除
+=>token,sub_pk  1,2...
+=>msg
+------------------------------------
+suboption_edit_list	分項編輯列表
+=>token,year,sub_pk
+=>msg,out[[sub_pk],[main_id],[sub_id],[sub_name],[supervisor],[supervisor_id],[role_id],[[sno_option_sub],[member_id],[name],[role_id]]]
+------------------------------------
+------------------------------------
+spindles_get_role	策略取得角色
+=>token
+=>msg,out[role_id,name]
+------------------------------------
+spindles_get_people	策略取得人物名稱
+=>token,role_id
+=>msg,out[sno_members,sno_roles,name]
+------------------------------------
+suboption_get_spindles	策略獲取主軸名稱
+=>token,year
+=>msg,out[main_pk,main_name]
+------------------------------------
+strategy_get_suboption	策略獲取分項名稱
+=>token,year,sno_option_main
+=>msg,out[sub_pk,sub_name]
+------------------------------------
+strategy_get_indicators_type	策略獲取指標[類型]和[說明]
+=>token
+=>msg,out1[sno_edu_indicators,name],out2[sno_edu_indicators_sub,name]
+------------------------------------
+strategy_get_indicators_project	策略獲取指標項目
+=>token,sno_edu_indicators,edu_indicators_sub
+=>msg,out[sno_edu_indicators_detail,name]
+------------------------------------
+strategy_get_list	策略取得列表
+=>token,year
+=>msg,out[[strategies_pk],[main_sub_order],[strategies_order],[name],[aim],[indicators_detail_id],[edu],[supervisor_id],[supervisor],[role_id],edit_name[[sno_option_strategies],[member_id],[name],[role_id]],[set]]
+------------------------------------
+strategy_edit_list	策略編輯列表
+=>token,year,sno_option_strategies
+=>msg,out[[strategies_pk],[main_sub_order],[strategies_order],[name],[aim],[indicators_detail_id],[edu],[supervisor_id],[supervisor],[role_id],edit_name[[sno_option_strategies],[member_id],[name],[role_id]],[topic]]
+------------------------------------
+strategy_insert	策略新增列表
+=>token,sno_edu_indicators_detail,option_strategies_order,name,aims,supervisor_strategies,activate_yyy,sno_option_sub,sno_member[[],[],[]...]
+=>msg
+------------------------------------
+strategy_update	策略更新
+=>token,sno_edu_indicators_detail,option_strategies_order,name,aims,supervisor_strategies,sno_option_sub,sno_option_strategies,sno_member[[],[],[]...]
+=>msg
+------------------------------------
+strategy_delete	策略刪除
+=>token,sno_option_strategies  1,2...
+=>msg
+------------------------------------
+strategy_insert_topic	設定管考題目
+=>token,sno_edu_management[],sno_option_strategies[],sno_members[],type[]
+=>msg
+------------------------------------
+strategy_get_topic	設定管考題目
+=>token,sno_option_strategies
+=>msd,out[[manage_id],[manage_name],[edu_class],[sno_roles],[sno_members],[question]]
+------------------------------------
+------------------------------------
+spindles_get_role	活動取得角色
+=>token
+=>msg,out[role_id,name]
+------------------------------------
+spindles_get_people	活動取得人物名稱
+=>token,role_id
+=>msg,out[sno_members,sno_roles,name]
+------------------------------------
+activity_get_list	活動取得列表
+=>token,year
+=>msg,out[[project_pk],[year],[order],[name],[edu],[act_date],[supervisor],edit_name[[sno_option_projects],[member_id],[name],[role_id]]]
+------------------------------------
+資料管理取得新增部分，下拉式選單
+
+suboption_get_spindles	取得主軸名稱
+=>token, year
+=>msg,out[[main_pk],[main_name]]
+
+strategy_get_suboption	取得分項名稱
+=>token,sno_option_main, year
+=>msg,out[[sub_pk],[sub_name]]
+
+activity_edit_get_strategy	取得策略名稱
+=>token,sub_pk
+=>msg,out[[sno_option_strategies],[sno_edu_indicators_detail],[name]]
+
+spindles_get_role	取得角色
+=>token
+=>msg,out[role_id],[name]
+
+spindles_get_people	取得人物名稱
+=>token,role_id
+=>msg,out[[sno_members],[sno_roles],[name]]
+
+activity_edit_get_topic	取得管考欄位
+=>token,sno_option_strategies
+=>msg,out[[sno_project_summary],[name]]
+------------------------------------
+activity_insert	活動新增列表
+=>token,name,sno_option_strategies,activate_yyy,activate_date,supervisor_project,sno_member[],question[],sno_project_summary[]
+=>msg
+------------------------------------
+activity_get_list	活動取得列表
+=>token,year
+=>msg,out[[project_pk],[year],[order],[name],[edu],[act_date],[supervisor],edit_name[[sno_option_projects],[member_id],[name],[role_id]]]
+------------------------------------
+activity_edit_list	活動取得編輯列表
+=>token,year,sno_option_projects
+=>msg,out[[project_pk],[year],[order],[name],[edu],[act_date],[supervisor],edit_name[[sno_option_projects],[member_id],[name],[role_id]],topic[[sno_project_summary],[sno_edu_management],[question]]]
+------------------------------------
+activity_update	活動更新
+=>token,name,sno_option_strategies,activate_yyy,activate_date,supervisor_project,sno_option_projects,sno_member,question,sno_project,sno_project_summary
+=>msg
+------------------------------------
+activity_delete	活動刪除
+=>token,sno_option_projects 1,2.....
+=>msg
+------------------------------------
+------------------------------------
+question_get_list	問卷取得列表
+=>token,q_category
+=>msg,out[[q_pk],[a_type],[q_group],[q_title],[topic 1,2....]]
+------------------------------------
+question_get_version	問卷取得版本還有題目類型
+=>token
+=>msg,version[[sno_questionnarie_category],[name]],category[[sno_questionnarie_group],[name]]
+------------------------------------
+question_insert	問卷新增
+=>token ,sno_questionnarie_group,q_category,question_type, q_orders,titile,list 1,2....
+question_type->0,量表
+=>msg
+------------------------------------
+question_delete	問卷刪除
+=>token,sno_questionorder 1,2...
+=>msg
+------------------------------------
+------------------------------------部訂指標類型
+indicate_get_list	取得教育部指標類型列表
+=>token,year
+=>msg,out[[sno_edu_indicators],[activate_yyy],[name],[updated_at]]
+------------------------------------
+indicate_get_edit_type	取得編輯教育部指標類型資料
+=>token,sno_edu_indicators
+=>msg,out[[sno_edu_indicators],[activate_yyy],[name],[created_at],[updated_at]]
+------------------------------------
+indicate_insert	新增教育部指標類型資料
+=>token,activate_yyy,name
+=>msg
+------------------------------------
+indicate_update	更新教育部指標類型資料
+=>token,activate_yyy,name,sno_edu_indicators
+=>msg
+------------------------------------
+indicate_delete	刪除教育部指標類型資料
+=>token,sno_edu_indicators   1,2,3...
+=>msg
+------------------------------------
+------------------------------------部訂指標說明
+indicate2_get_list	取得教育部指標說明列表
+=>token,year
+=>msg,out[[sno_edu_indicators_sub],[activate_yyy],[name],[updated_at]]
+------------------------------------
+indicate2_get_edit_type	取得編輯教育部指標說明資料
+=>token,sno_edu_indicators_sub
+=>msg,out[[sno_edu_indicators_sub],[activate_yyy],[name],[updated_at]]
+------------------------------------
+indicate2_insert	新增教育部指標說明資料
+=>token,activate_yyy,name
+=>msg
+------------------------------------
+indicate2_update	更新教育部指標說明資料
+=>token,activate_yyy,name,sno_edu_indicators_sub
+=>msg
+------------------------------------
+indicate2_delete	刪除教育部指標說明資料
+=>token,sno_edu_indicators_sub   1,2,3...
+=>msg
+------------------------------------
+------------------------------------部訂指標項目
+indicate3_get_list	取得部訂指標項目列表
+=>token,year
+=>msg,out[[sno_edu_indicators_detail],[activate_yyy],[edu_name],[edu_sub_name],[edu_detail],[rule],[str]]
+------------------------------------
+indicate3_get_edit	取得編輯部訂指標項目
+=>token,sno_edu_indicators_detail
+=>msg,out[[sno_edu_indicators_detail],[activate_yyy],[edu_name],[edu_sub_name],[edu_detail],[rule],name[[sno_edu_management],[name]]]
+------------------------------------
+indicate3_insert	新增部訂指標項目
+=>token,activate_yyy,name,edu_indicators_detail_rule,sno_edu_indicators,edu_indicators_sub,|||管考|||sno_edu_indicator_detail,names
+=>msg
+------------------------------------
+indicate3_update	更新部訂指標項目
+=>token,activate_yyy,name,edu_indicators_detail_rule,sno_edu_indicators,edu_indicators_sub,sno_edu_indicators_detail,|||管考|||sno_edu_indicator_detail[],names[]
+=>msg
+------------------------------------
+indicate3_delete	刪除部訂指標項目
+=>token,sno_edu_indicators_detail   1,2,3...
+=>msg
+------------------------------------
+------------------------------------問卷版本管理
+questype_get_list	取得問卷版本名稱列表
+=>token
+=>msg,out[[sno_questionnarie_category],[name],[updated_at]]
+------------------------------------
+questype_get_edit	取得編輯問卷版本名稱資料
+=>token,sno_questionnarie_category
+=>msg,out[[sno_questionnarie_category],[name],[updated_at]]
+------------------------------------
+questype_insert		新增問卷版本
+=>token,name
+=>msg
+------------------------------------
+questype_update		更新問卷版本
+=>token,name,sno_questionnarie_category
+=>msg
+------------------------------------
+questype_delete		刪除問卷版本
+=>token,sno_questionnarie_category  5,6,7....
+=>msg
+------------------------------------
+------------------------------------csv檔
+csv_out	匯出csv_總結報表(含教師)
+=>token,year
+=>msg,url
+------------------------------------
+csv_out_no	匯出csv_總結報表(不含教師)
+=>token,year
+=>msg,url
+------------------------------------
+call_date	催繳日期
+=>token
+=>msg,out--------是管理員out就會有值	不是管理員out是空值
+------------------------------------
+call_date_update	催繳日期更新
+=>token,day,isactivate
+=>msg,out--------out=1是管理員	out=0不是管理員
+------------------------------------
+------------------------------------
+------------------------------------
+question_topic_serve	問卷取的題目 done
+=>token,type
+=>msg,outt[[sno_questionnarie_group],[groupname],topic[[sno_questionorder],[question],sub[[subquestion],[subqid]]]]
+------------------------------------
+account_get_role	帳號的腳色下拉式選單 done
+=>token
+=>msg,out[[id],[name]]
+------------------------------------
+account_get_list	帳號取得列表 done
+=>token
+=>msg,out[[mem_id],[acc],[rol_id],[rol_name],[mem_name],[email],[created_at]]
+------------------------------------
+account_insert	帳號新增 done
+=>token,sno_roles,account,passwd,name,email
+=>msg						200成功,207帳號有重複
+------------------------------------
+account_delete	帳號刪除 done
+=>token,userid 
+=>msg
+------------------------------------
+account_get_edit_list	帳號取得編輯列表 done
+=>token,userid
+=>msg,out[mem_id,acc,rol_id,rol_name,mem_name,email,created_at]
+------------------------------------
+account_edit	帳號編輯 done
+=>token,sno_roles,account,passwd,name,email,userid
+=>msg						200成功,207帳號有重複
+------------------------------------
+account_insert_csv	用csv帳號新增 done
+=>token,csv->account,passwd,name,role,email
+=>msg,out					200成功,out->重複的帳號    209上傳csv失敗
+------------------------------------
+------------------------------------策略總結
+summary_get_yyy		策略總結取得下拉是選單(年分) done
+=>token
+=>msg,out[year]
+------------------------------------
+summary_get_list	策略總結取得列表 done
+=>token,year
+=>msg,out[[strategies_id],[strategies_name],[edu_opt_name],[edu_class_name],[supervior_name],[is_summary]]--------------is_summary=1->總結   is_summary=0->未總結
+------------------------------------
+summary_get_content	策略總結取得內容 done
+=>token,sno_option_strategies
+=>msg,out1[[strategies_id],[edu_opt_name],[edu_detail],[edu_class_name],[edu_rule],[strategies_name],[supervior_name],[strategies_aim]],
+out2[[sno_strategies_summary],[name],[results],[type]],
+out3[[sno_edu_management],[name],[question],[results]]
+------------------------------------
+summary_update	策略總結更新資料內容 done 
+=>token,sno_strategies_summary(流水號),results(內容)
+=>msg
+------------------------------------
+summary_get_report	策略總結取得報告書列表 done
+=>token,sno_option_strategies
+=>msg,out[[p_id],[p_name],[update],[type],[isfilled],[limted_date]]
+------------------------------------
+------------------------------------站內信
+letter_submit	送審
+=>token,sno_option_projects
+=>msg
+------------------------------------
+letter_record	審核紀錄—送出按鈕
+=>token,sno_option_projects,message
+=>msg
+------------------------------------
+letter_get_list	送審記錄列表
+=>token,sno_option_projects
+=>msg,issupervisor,out[[created_at],[source],[target],[exmsg],[type]]---------issupervisor=1 是計畫主持人
+------------------------------------
+letter_access	審核通過
+=>token,sno_option_projects,message
+=>msg
+------------------------------------
+letter_get_list1	首頁站內信列表
+=>token
+=>msg,out[[sno_option_projects],[sno_source],[name],[created_at],[type]]
+------------------------------------編輯問卷
+question_get	取得問卷 done
+=>token,sno_projects
+=>msg,/////看照片
+------------------------------------
+question_update	更新問卷 done
+=>token,result[],sno_questionnaires_results[]
+=>msg
+------------------------------------忘記密碼
+forget_password	忘記密碼(寄email)
+=>account,email
+=>msg,out-------------out=1 帳號和email正確		out=0 帳號或email錯誤
+------------------------------------
+password_update	
+=>passwd,repasswd,psdkey
+=>msg,out------------out=密碼跟確認密碼不一致

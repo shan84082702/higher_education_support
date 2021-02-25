@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>高教深耕彙整平台|忘記密碼</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
+
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+        .message{
+            
+            border-style: solid;
+            border-color: gray;
+            margin-left:20px;
+            width:auto;
+            
+        }
+        .popup{
+            border-style: solid;
+            border-color: gray;
+            
+            width:auto;
+        }
+        .deletebutton{
+            margin-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <form>
+        <div class="wrapper">
+
+            <header class="main-header">
+
+                <a href="index.html" class="logo" style="height: 64px">
+                    <span class="logo-mini"><b></b></span>
+                    <span class="logo-lg"><b>高教深耕彙整平台</b></span>
+                </a>
+            </header>
+            <div class="content-wrapper" style="min-height: 960px;">
+                <br>
+
+                <section class="content-header">
+                    <div class="container">
+                        <h1 style="margin-left:20px;font-size: 30px">忘記密碼</h1>
+                    </div>
+                </section>
+
+                <section class="content">
+                    <div class="container">
+                        <div style="border-radius:5px; border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;margin-top:5px;">
+                            <form>
+                                <div class="box-body" style="margin-left:20px;margin-top:4px;margin-bottom:4px;">
+
+                                    <div class="form-class" style="margin-top:1.5%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>密碼：
+                                        </label>
+                                        <input type="text" id="new_pwd" size="30%" style="height:30px;margin-left:0.5%;margin-right:2%;" />
+                                    </div>
+                                    <div class="form-class" style="margin-top:1.5%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>確認密碼：
+                                        </label>
+                                        <input type="text" id="new_pwd_check" size="30%" style="height:30px;margin-left:0.5%;margin-right:2%;" />
+                                        <a class="btn btn-primary" id="btnadd">修改密碼</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+    </form>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="dist/js/adminlte.min.js"></script>
+    <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="dist/js/demo.js"></script>
+    <script src="dist/js/cookie.js"></script>
+    <script>
+        $(document).ready(function () {
+
+        })
+
+        $("#btnadd").click(function (e) {
+            var pwd = document.getElementById("new_pwd").value;
+            var new_pwd = document.getElementById("new_pwd_check").value;
+            var canadd = true;
+            var url = location.href;
+            if (url.indexOf('?') != -1) {
+                var ary1 = url.split('?');
+                var psdkey = ary1[1].split("=");
+                
+            }
+
+            if (pwd == '' || new_pwd == '') {
+                canadd = false;
+                alert("Please fill all the information");
+            }
+            if (pwd != new_pwd) {
+                canadd = false;
+                alert("兩次輸入的密碼不正確");
+            }
+            if (canadd) {
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/password_update.php",
+                    async: false,  ///非同步執行
+                    dataType: "json",
+                    data: { passwd:pwd,repasswd: new_pwd,psdkey:psdkey[1]},
+                    success: function (data) {
+                        alert("更改成功，請重新登入");
+                        location.document.href="login.html";
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

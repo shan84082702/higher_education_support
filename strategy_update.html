@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="dist/js/cookie.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>高教深耕彙整平台|主軸/分項/策略/活動名稱管理</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+        .message {
+            border-style: solid;
+            border-color: gray;
+            margin-left: 20px;
+            width: auto;
+        }
+
+        .strategy_td {
+            width: 10%
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <form>
+        <div class="wrapper">
+            <header class="main-header">
+                <a href="index.html" class="logo" style="height: 64px">
+                    <span class="logo-mini"><b></b></span>
+                    <span class="logo-lg"><b>高教深耕彙整平台</b></span>
+                </a>
+                <nav class="navbar navbar-static-top">
+                    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" style="height: 64px;">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown user user-menu">
+                                <a>
+                                    <span class="hidden-xs" style="font-size:20px" id="username">User Name&nbsp;</span>
+                                    <span class="hidden-xs" style="font-size:16px" id="usertitle">User
+                                        Title&nbsp;</span>
+                                    <button type="button" class="btn" style="color:#707070" id="logout_btn"> 登出</button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <ul id="menu" class="sidebar-menu" data-widget="tree">
+                    </ul>
+                </section>
+            </aside>
+
+            <div class="content-wrapper" style="min-height: 960px;">
+                <br>
+                <section class="content-header">
+                    <h1 style="margin-left:20px;font-size: 30px">資料管理
+                        <small>主軸/分項/策略/活動名稱管理</small>
+                    </h1>
+                </section>
+
+                <section class="content" style="margin-left:10px;margin-right:10px;">
+                    <div id="alarm"
+                        style="display:none;border-radius:5px; border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;margin-top:5px;">
+                        <div>
+                            <form>
+                                <div class="box-body" style="margin-left:20px;margin-top:4px;margin-bottom:4px;">
+                                    <div class="form-class">
+                                        <label for="inputEmail3">催繳緩衝天數：</label>
+                                        <input type="text" id="alarm_period" value="30"
+                                            style="width:5%;height:30px;margin-left:0.5%;margin-right:0.5%;" />
+                                        <label for="inputEmail3">天</label>
+                                        <div class="btn-group" style="margin-left:2%;">
+                                            <button type="button" class="btn btn-info" id="isactivate_on">On</button>
+                                            <button type="button" class="btn btn-info" id="isactivate_off">Off</button>
+                                        </div>
+                                        <a class="btn btn-success" style="margin-left:1%;" id="activate_setup">設定</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="form-class" style="margin-left:20px;margin-top:10px;margin-bottom:10px;">
+                        <label for="inputEmail3">
+                            <font color="red">*</font>年度：
+                        </label>
+                        <select style="height:30px;width:10%;margin-left:0.5%;margin-right:1.5%;" id="index_type_year"
+                            class="index_type_year"></select>
+                        <label for="inputEmail3">
+                            <font color="red">*</font>類別：
+                        </label>
+                        <select style="height:30px;width:10%;margin-left:0.5%;margin-right:3%;" id="type"
+                            onchange="show_data_table(this.value)">
+                            <option value="0">主軸</option>
+                            <option value="1">分項</option>
+                            <option value="2">策略</option>
+                            <option value="3">活動</option>
+                        </select>
+                    </div>
+                    <div style="border-radius:5px; border-style:solid;
+                        border-color:#8C8C8C;margin-left:20px;margin-right:20px;margin-top:5px;">
+                        <div id="main">
+                            <form>
+                                <div class="box-body" style="margin-left:20px;margin-top:4px;margin-bottom:4px;">
+                                    <div class="form-class">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>代號：
+                                        </label>
+                                        <input type="text" id="main_id"
+                                            style="width:10%;height:30px;margin-left:0.5%;margin-right:3%;" />
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>負責人：
+                                        </label>
+                                        <select style="height:30px;width:15%;margin-left:0.5%;" id="main_role_name"
+                                            class="main_edit selectpicker" data-live-search="true"></select>
+                                        <select style="height:30px;width:15%;" id="main_teacher"
+                                            class="main_edit_teacher selectpicker" data-live-search="true"></select>
+                                        <input type="text" id="main_data_id" size="10%" style="display:none;" />
+                                    </div>
+                                    <div class="form-class act_main_edit" style="margin-top:0.5%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>可編輯人員：
+                                        </label>
+                                        <select style="height:30px;width:15%;margin-left:0.5%;" id="main_edit_name"
+                                            data-live-search="true" class="main_edit selectpicker"></select>
+                                        <select style="height:30px;width:15%;" id="main_edit_teacher"
+                                            data-live-search="true" name="main_edit_teacher selectpicker" class="main_edit_teacher selectpicker"></select>
+                                        <button type="button" class="button hollow circle plus_btn" data-quantity="plus"
+                                            data-field="quantity" style="margin-left:1%;">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-class act_main_review" style="margin-top:0.5%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>審查人員：
+                                        </label>
+                                        <select style="height:30px;width:15%;margin-left:0.5%;" id="main_review_name"
+                                            class="main_edit selectpicker" data-live-search="true"></select>
+                                        <select style="height:30px;width:15%;" id="main_review_teacher"
+                                            name="main_review_teacher" class="main_edit_teacher selectpicker" data-live-search="true"></select>
+                                        <button type="button" class="button hollow circle plus_review_btn"
+                                            data-quantity="plus" data-field="quantity" style="margin-left:1%;">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-class" style="margin-top:0.5%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>名稱：
+                                        </label>
+                                        <input type="text" id="main_name"
+                                            style="width:60%;height:30px;margin-left:0.5%;margin-right:2%;" />
+                                        <a class="btn btn-primary" id="main_btnadd">新增</a>
+                                        <a class="btn btn-warning" id="main_btnedit" style="display:none;">編輯</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="sub_item" style="display:none;">
+                            <form>
+                                <div class="box-body" style="margin-left:20px;margin-top:4px;margin-bottom:4px;">
+                                    <div class="form-class">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>代號：
+                                        </label>
+                                        <input type="text" id="sub_item_id"
+                                            style="width:10%;height:30px;margin-left:0.5%;margin-right:3%;" />
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>所屬主軸名稱：
+                                        </label>
+                                        <select style="height:30px;width:30%;margin-left:0.5%;margin-right:3%;"
+                                            id="item_main_name"></select>
+                                        <input type="text" id="item_data_id" size="10%" style="display:none;" />
+                                    </div>
+                                    <div class="form-class" style="margin-top:0.5%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>負責教師：
+                                        </label>
+                                        <select style="height:30px;width:15%;margin-left:0.5%;" id="item_role_name"
+                                        class="main_edit selectpicker" data-live-search="true"></select>
+                                        <select style="height:30px;width:15%;" id="item_teacher" class="main_edit_teacher selectpicker" data-live-search="true"></select>
+                                    </div>
+                                    <div class="form-class act_item_edit" style="margin-top:0.5%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>可編輯人員：
+                                        </label>
+                                        <select style="height:30px;width:15%;margin-left:0.5%;" id="item_edit_name"
+                                        class="main_edit selectpicker" data-live-search="true"></select>
+                                        <select style="height:30px;width:15%;" id="item_edit_teacher" class="main_edit_teacher selectpicker" data-live-search="true"></select>
+                                        <button type="button" class="button hollow circle plus_item_btn"
+                                            data-quantity="plus" data-field="quantity" style="margin-left:1%;">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-class" style="margin-top:0.5%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>分項名稱：
+                                        </label>
+                                        <input type="text" id="item_name"
+                                            style="width:60%;height:30px;margin-left:0.5%;margin-right:2%;" />
+                                        <a class="btn btn-primary" id="item_btnadd">新增</a>
+                                        <a class="btn btn-warning" id="item_btnedit" style="display:none;">編輯</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="strategy" style="display:none;">
+                            <form>
+                                <div class="box-body" style="margin-left:20px;margin-top:4px;margin-bottom:4px;">
+                                    <!-- <div class="form-class">
+                                        <label for="inputEmail3">部定指標類型：</label>
+                                        <select style="height:30px;width:20%;margin-left:0.5%;margin-right:3%;"
+                                            id="strategy_index_type" class="strategy_edu_index">
+                                            <option value="0">----------</option>
+                                            <option value="1">類型1</option>
+                                            <option value="2">類型2</option>
+                                            <option value="3">類型3</option>
+                                        </select>
+                                        <input type="text" id="strategy_data_id" size="10%" style="display:none;" />
+                                    </div>
+                                    <div class="form-class" style="margin-top:1%;">
+                                        <label for="inputEmail3">部定指標說明：</label>
+                                        <select style="height:30px;width:20%;margin-left:0.5%;margin-right:3%;"
+                                            id="strategy_index_explain" class="strategy_edu_index"></select>
+                                        <label for="inputEmail3">部定指標項目：</label>
+                                        <select style="height:30px;width:30%;margin-left:0.5%;margin-right:3%;"
+                                            id="strategy_index_item"></select>
+                                    </div> -->
+                                    <div class="form-class" style="margin-top:1%;">
+
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>所屬主軸名稱：
+                                        </label>
+                                        <select style="height:30px;width:20%;margin-left:0.5%;margin-right:3%;"
+                                            id="strategy_main_name" class="strategy_main_item"></select>
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>所屬分項名稱：
+                                        </label>
+                                        <select style="height:30px;width:25%;margin-left:0.5%;margin-right:3%;"
+                                            id="strategy_item_name"></select>
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>代號：
+                                        </label>
+                                        <input type="text" id="strategy_id"
+                                            style="width:10%;height:30px;margin-left:0.5%;margin-right:3%;" />
+                                    </div>
+                                    <div class="form-class" style="margin-top:1%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>策略名稱：
+                                        </label>
+                                        <input type="text" id="strategy_name"
+                                            style="width:60%;height:30px;margin-left:0.5%;" />
+                                    </div>
+                                    <div class="form-class" style="margin-top:1%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>具體作法：
+                                        </label>
+                                        <textarea rows="2" id="strategy_goal"
+                                            style="width:60%;margin-left:0.5%;"></textarea>
+                                    </div>
+                                    <div class="form-class" style="margin-top:1%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>負責教師：
+                                        </label>
+                                        <select style="height:30px;width:15%;margin-left:0.5%;" id="strategy_role_name"
+                                        class="main_edit selectpicker" data-live-search="true"></select>
+                                        <select style="height:30px;width:15%;" id="strategy_teacher" class="main_edit_teacher selectpicker" data-live-search="true"></select>
+                                    </div>
+                                    <div class="form-class act_strategy_edit" style="margin-top:1%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>可編輯人員：
+                                        </label>
+                                        <select style="height:30px;width:15%;margin-left:0.5%;" id="strategy_edit_name"
+                                        class="main_edit selectpicker" data-live-search="true"></select>
+                                        <select style="height:30px;width:15%;" id="strategy_edit_teacher" class="main_edit_teacher selectpicker" data-live-search="true"></select>
+                                        <button type="button" class="button hollow circle plus_strategy_btn"
+                                            data-quantity="plus" data-field="quantity" style="margin-left:1%;">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+
+                                    </div>
+                                    <!-- 策略指定題目 0802-->
+                                    <div class="form-class act_strategy_ans_edit" style="margin-top:1%;">
+                                        <input type="text" id="strategy_data_id" size="10%" style="display:none;" />
+                                        <div>
+                                            <label for="inputEmail3">
+                                                <font color="red">*</font>指定回答題目：
+                                            </label>
+                                            <select style="height:30px;width:15%;margin-left:0.5%;"
+                                                id="strategy_index_type" class="strategy_index_type">
+                                            </select>
+                                            <select style="height:30px;width:15%;margin-left:0.5%;"
+                                                id="strategy_index_explain" class="strategy_index_explain"></select>
+                                            <select style="height:30px;width:15%;margin-left:0.5%;"
+                                                id="strategy_index_item" class="strategy_index_item"></select>
+                                        </div>
+                                        <div style="margin-top:0.5%;">
+                                            <label for="inputEmail3" style="visibility:hidden;">
+                                                <font color="red">*</font>指定回答題目：
+                                            </label>
+                                            <select style="height:30px;width:15%;margin-left:0.5%;"
+                                                id="strategy_test_select" class="strategy_test_select"></select>
+                                            <button type="button" class="button hollow circle plus_strategy_ans_btn"
+                                                data-quantity="plus" data-field="quantity" style="margin-left:1%;">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a class="btn btn-primary" style="margin-left:45%;" id="strategy_btnadd">新增</a>
+                                        <a class="btn btn-warning" id="strategy_btnedit"
+                                            style="display:none;margin-left:45%;">編輯</a>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                        <!--
+                        <div class="modal fade" id="modal-default">
+                            <div class="modal-dialog" style="width:50%">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background-color:#5991C9">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" style="color:white">執行內容與管考指標設定</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="box-body">
+                                            <div class="row" id="supervisor_show_table">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"
+                                            id="supervisor_table_save">儲存</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        <div id="activity" style="display:none;">
+                            <form>
+                                <div class="box-body" style="margin-left:20px;margin-top:4px;margin-bottom:4px;">
+                                    <div class="form-class">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>所屬主軸名稱：
+                                        </label>
+                                        <select style="height:30px;width:25%;margin-left:0.5%;margin-right:1.5%;"
+                                            id="activity_main_name" class="activity_main"></select>
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>所屬分項名稱：
+                                        </label>
+                                        <select style="height:30px;width:25%;margin-left:0.5%;margin-right:1.5%;"
+                                            id="activity_item_name" class="activity_item"></select>
+                                    </div>
+                                    <div class="form-class" style="margin-top:1%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>所屬策略名稱：
+                                        </label>
+                                        <select style="height:30px;width:40%;margin-left:0.5%;margin-right:1.5%;"
+                                            id="activity_strategy_name" class="activity_strategy"></select>
+                                    </div>
+                                    <div class="form-class" style="margin-top:1%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>活動報告書承辦人：
+                                        </label>
+                                        <select style="height:30px;width:15%;margin-left:0.5%;" id="activity_role_name"
+                                        class="main_edit selectpicker" data-live-search="true"></select>
+                                        <select style="height:30px;width:15%;" id="activity_teacher" class="main_edit_teacher selectpicker" data-live-search="true"></select>
+                                    </div>
+                                    <div class="form-class act_activity_edit" style="margin-top:1%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>可編輯人員：
+                                        </label>
+                                        <select style="height:30px;width:15%;margin-left:0.5%;" id="activity_edit_name"
+                                        class="main_edit selectpicker" data-live-search="true"></select>
+                                        <select style="height:30px;width:15%;" id="activity_edit_teacher" class="main_edit_teacher selectpicker" data-live-search="true"></select>
+                                        <button type="button" class="button hollow circle plus_activity_btn"
+                                            data-quantity="plus" data-field="quantity" style="margin-left:1%;">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-class" style="margin-top:1%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>活動名稱：
+                                        </label>
+                                        <input type="text" id="activity_name"
+                                            style="width:60%;height:30px;margin-left:0.5%;margin-right:3%;" />
+                                    </div>
+                                    <div class="form-class" style="margin-top:1%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>預計執行月份：
+                                        </label>
+                                        <input type="text" id="activity_month" placeholder="  ex:1 or 1-3"
+                                            style="width:10%;height:30px;margin-left:0.5%;margin-right:0.5%;" />
+                                        <label for="inputEmail3">月</label>
+                                        <input type="text" id="activity_data_id" size="10%" style="display:none;" />
+                                    </div>
+                                    <!--here-->
+                                    <div class="form-class act_activity_ans_edit" style="margin-top:1%;">
+                                        <div>
+                                            <label for="inputEmail3">
+                                                <font color="red">*</font>指定回答題目：
+                                            </label>
+                                            <select style="height:30px;width:15%;margin-left:0.5%;"
+                                                id="activity_index_type" class="activity_index_type">
+                                            </select>
+                                            <select style="height:30px;width:15%;margin-left:0.5%;"
+                                                id="activity_index_explain" class="activity_index_explain"></select>
+                                            <select style="height:30px;width:15%;margin-left:0.5%;"
+                                                id="activity_index_item" class="activity_index_item"></select>
+                                        </div>
+                                        <div style="margin-top:0.5%;">
+                                            <label for="inputEmail3" style="visibility:hidden;">
+                                                <font color="red">*</font>指定回答題目：
+                                            </label>
+                                            <select style="height:30px;width:15%;margin-left:0.5%;"
+                                                id="activity_test_select" class="activity_test_select"></select>
+                                            <input type="text" id="activity_ans"
+                                                style="width:15%;height:30px;margin-left:0.5%;" value="如問題描述，請回答" />
+                                            <select style='width:10%;height:30px;margin-left:0.5%;margin-right:5%;'
+                                                id="activity_ans_type">
+                                                <option value='0'>文字描述</option>
+                                                <option value='1'>附檔</option>
+                                            </select>
+                                            <!--
+                                        <select style="height:30px;width:10%;margin-left:0.5%;"
+                                            id="supervisor_teacher_role" class="main_edit"></select>
+                                        <select style="height:30px;width:10%;margin-left:0.5%;"
+                                            id="supervisor_teacher_name"></select>-->
+                                            <input type="text" id="activity_ans_id" size="5%"
+                                                style="height:30px;display:none;" />
+                                            <button type="button" class="button hollow circle plus_activity_ans_btn"
+                                                data-quantity="plus" data-field="quantity" style="margin-left:1%;">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-class act_review_edit" style="margin-top:1%;">
+                                        <label for="inputEmail3">
+                                            <font color="red">*</font>審核程序：
+                                        </label>
+                                        <select style="height:30px;width:15%;margin-left:0.5%;" id="review_name"
+                                        class="main_edit selectpicker" data-live-search="true"></select>
+                                        <select style="height:30px;width:15%;" id="review_teacher" class="main_edit_teacher selectpicker" data-live-search="true"></select>
+                                        <input type="text" id="review_status" class="review_status" size="5%"
+                                            style="height:30px;display:none;" />
+                                        <button type="button" class="button hollow circle plus_act_review_btn"
+                                            id="plus_act_review_btn" data-quantity="plus" data-field="quantity"
+                                            style="margin-left:1%;">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-class" style="margin-top:1%;">
+                                        <a class="btn btn-primary" id="activity_btnadd">新增</a>
+                                        <a class="btn btn-warning" id="activity_btnedit" style="display:none;">編輯</a>
+                                        <a class="btn btn-warning" id="activity_btncancel"
+                                            style="display:none;">取消(資料僅供檢視)</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div style="margin-top:20px;">
+                        <a class="btn btn-danger" style="margin-left:20px;" id="btndelete">刪除</a>
+                    </div>
+                    <div id="main_table"
+                        style="border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;margin-top:10px;">
+                        <div class="box-header">
+                            <h3 class="box-title">主軸名稱名冊</h3>
+                        </div>
+                        <div class="box-body" style="margin-left:10px;margin-right:20px;overflow-x:scroll;">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="display:none;">ID</th>
+                                        <th><input type="checkbox" name="main_CheckAll" id="main_CheckAll"></th>
+                                        <th>年度</th>
+                                        <th>主軸代號</th>
+                                        <th>主軸名稱</th>
+                                        <th>負責教師</th>
+                                        <th>可編輯人員</th>
+                                        <th>審查人員</th>
+                                        <th>功能</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="sub_table"
+                        style="border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;margin-top:10px;">
+                        <div class="box-header">
+                            <h3 class="box-title">分項名稱名冊</h3>
+                        </div>
+                        <div class="box-body" style="margin-left:10px;margin-right:20px;overflow-x:scroll;">
+                            <table id="example2" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="display:none;">ID</th>
+                                        <th><input type="checkbox" name="item_CheckAll" id="item_CheckAll"></th>
+                                        <th>年度</th>
+                                        <th>所屬主軸代號</th>
+                                        <th>分項代號</th>
+                                        <th>分項名稱</th>
+                                        <th>負責教師</th>
+                                        <th>可編輯人員</th>
+                                        <th>功能</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="strategy_table"
+                        style="border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;margin-top:10px;"
+                        class="container-fluid">
+                        <div class="box-header">
+                            <h3 class="box-title">策略名冊</h3>
+                        </div>
+                        <div class="box-body" style="margin-left:10px;margin-right:20px;overflow-x:scroll;">
+                            <table id="example3" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="display:none;">ID</th>
+                                        <th><input type="checkbox" name="strategy_CheckAll" id="strategy_CheckAll"></th>
+                                        <th>年度</th>
+                                        <th>所屬主軸<br>-分項代號</th>
+                                        <th>策略<br>代號</th>
+                                        <th>策略名稱</th>
+                                        <th>具體作法</th>
+                                        <th>負責<br>教師</th>
+                                        <th>可編輯<br>人員</th>
+                                        <!--<th>執行內容與<br>管考指標<br>(對應教育部<br>管考欄位)</th>-->
+                                        <th>功能</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="activity_table"
+                        style="border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;margin-top:10px;">
+                        <div class="box-header">
+                            <h3 class="box-title">活動名冊</h3>
+                        </div>
+                        <div class="box-body" style="margin-left:10px;margin-right:20px;overflow-x:scroll;">
+                            <table id="example4" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="display:none;">ID</th>
+                                        <th><input type="checkbox" name="activity_CheckAll" id="activity_CheckAll"></th>
+                                        <th>年度</th>
+                                        <th>所屬主軸<br>-分項-策略<br>代號</th>
+                                        <th>活動名稱</th>
+                                        <th>預計執行月份</th>
+                                        <th>負責教師</th>
+                                        <th>可編輯人員</th>
+                                        <th>功能</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <footer class="main-footer">
+                <div class="pull-right hidden-xs">
+                    <b>Version</b> 2.4.0
+                </div>
+                <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All
+                rights
+                reserved.
+            </footer>
+
+            <div class="control-sidebar-bg"></div>
+
+        </div>
+    </form>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="dist/js/adminlte.min.js"></script>
+    <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+    <script src="dist/js/demo.js"></script>
+    <script src="dist/js/general.js"></script>
+    <script src="dist/js/main.js"></script>
+    <script src="dist/js/item.js"></script>
+    <script src="dist/js/strategy.js"></script>
+    <script src="dist/js/activity.js"></script>
+</body>
+
+</html>

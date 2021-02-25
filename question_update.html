@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="dist/js/cookie.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>高教深耕彙整平台|問卷題目管理</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+        .message{
+            border-style: solid;
+            border-color: gray;
+            margin-left:20px;
+            width:auto;
+            
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <form>
+        <div class="wrapper">
+            <header class="main-header">
+                <a href="index.html" class="logo" style="height: 64px">
+                    <span class="logo-mini"><b></b></span>
+                    <span class="logo-lg"><b>高教深耕彙整平台</b></span>
+                </a>
+
+                <nav class="navbar navbar-static-top">
+                    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" style="height: 64px;">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown user user-menu">
+                                <a>
+                                    <span class="hidden-xs" style="font-size:20px" id="username">User Name&nbsp;</span>
+                                    <span class="hidden-xs" style="font-size:16px" id="usertitle">User Title&nbsp;</span>
+                                    <button type="button" class="btn" style="color:#707070" id="logout_btn"> 登出</button>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </nav>
+            </header>
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <ul id="menu" class="sidebar-menu" data-widget="tree">
+                    </ul>
+                </section>
+            </aside>
+            
+            <div class="content-wrapper" style="min-height: 960px;">
+                <br>
+                <section class="content-header">
+                    <h1 style="margin-left:20px;font-size: 30px">資料管理
+                        <small>問卷題目管理</small>
+                    </h1>
+                </section>
+                
+                <section class="content" style="margin-left:10px;margin-right:10px;">
+                    <div style="border-radius:5px; border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;margin-top:5px;">
+                        <form>
+                            <div class="box-body" style="margin-left:20px;margin-top:4px;margin-bottom:4px;">
+                                <div class="form-class">
+                                    <label for="inputEmail3">
+                                        <font color="red">*</font>題目順序：
+                                    </label>
+                                    <input type="text" id="question_order" size="5%" style="height:30px;margin-left:0.5%;margin-right:3%;" />
+                                    <label for="inputEmail3">
+                                        <font color="red">*</font>題型：
+                                    </label>
+                                    <select style="height:30px;width:10%;margin-left:0.5%;margin-right:3%;" id="question_type"
+                                        onchange="option_text(this.value)">
+                                        <option value="0">量表</option>
+                                        <option value="1">自訂</option>
+                                    </select>
+                                    <label for="inputEmail3">
+                                        <font color="red">*</font>類別：
+                                    </label>
+                                    <select style="height:30px;width:10%;margin-left:0.5%;" id="classification"></select>
+                                </div>
+                                <div class="form-class" style="margin-top:10px;">
+                                    <label for="inputEmail3">
+                                        <font color="red">*</font>題組名稱：
+                                    </label>
+                                    <input type="text" id="question_name" size="40%" style="height:30px;margin-left:0.5%;margin-right:2%;" />
+                                </div>
+                                <div class="form-class" style="margin-top:10px;">
+                                    <label for="inputEmail3">
+                                        <font color="red">*</font>題目：
+                                    </label>
+                                    <input type="text" id="multi_option" placeholder="  disabled" size="60%" style="height:30px;margin-left:0.5%;margin-right:20%;"
+                                        disabled />
+                                    <a class="btn btn-primary" id="btnadd">新增</a>
+                                    <a class="btn btn-warning" id="btnedit" style="display:none;">編輯</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div style="margin-top:20px;">
+                        <a class="btn btn-danger" style="margin-left:20px;" id="btndelete">刪除</a>
+                    </div>
+                    <div style="margin-top:10px;">
+                        <div class="btn_group" id="btn_group" style="margin-left:20px;"></div>
+                    </div>
+                    <div style="border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;">
+                        <div class="box-body" style="margin-left:10px;margin-right:20px;overflow-x:scroll;">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="display:none;">ID</th>
+                                        <th><input type="checkbox" name="CheckAll" id="CheckAll"></th>
+                                        <th>順序</th>
+                                        <th>題型</th>
+                                        <th>類別</th>
+                                        <th>題組名稱</th>
+                                        <th>題目</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <footer class="main-footer">
+                <div class="pull-right hidden-xs">
+                    <b>Version</b> 2.4.0
+                </div>
+                <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All
+                rights
+                reserved.
+            </footer>
+            <div class="control-sidebar-bg"></div>
+
+        </div>
+    </form>
+    
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="dist/js/adminlte.min.js"></script>
+    <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="dist/js/demo.js"></script>
+    <script>
+        var token = GetCookie("token");
+        var version_id = 0;
+        var classification_initial = 0;
+        $(document).ready(function () {
+            var user_name = GetCookie("user_name");
+            $("#username").text(user_name);
+            var usertitle = GetCookie("role_name");
+            $('#usertitle').text(usertitle);
+            checkToken();
+            $("#username").text(user_name);
+            $("#logout_btn").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/signout_serve.php",
+                    async: false,
+                    dataType: "json",
+                    data: { token: token },
+                    success: function (data) {
+                        if (checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                })
+            });
+
+            $('#example1').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false,
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                    }
+                ],
+                'oLanguage': {
+                    "sProcessing": "處理中...",
+                    "sLengthMenu": "顯示 _MENU_ 項結果",
+                    "sZeroRecords": "沒有匹配結果",
+                    "sInfo": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                    "sInfoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                    "sInfoFiltered": "(從 _MAX_ 項結果過濾)",
+                    "sSearch": "搜尋:",
+                    "oPaginate": {
+                        "sFirst": "首頁",
+                        "sPrevious": "上一頁",
+                        "sNext": "下一頁",
+                        "sLast": "尾頁"
+                    }
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "phpMod/menu.php",
+                async: false,
+                dataType: "json",
+                data: { token: token, page:4, subpage:3 },
+                success: function (data) {
+                    if (!checkMsg(data.msg)) {
+                        delete_all_cookie();
+                    }
+                    if (checkMsg(data.msg)) {
+                        var menu = data.remenu;
+                        $("#menu").append(menu);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            })
+
+            var btn_group_text = "";
+            var classification_option = "";
+            $.ajax({
+                type: "POST",
+                url: "phpMod/question_get_version.php",
+                async: false,
+                dataType: "json",
+                data: { token: token },
+                success: function (data) {
+                    if (!checkMsg(data.msg)) {
+                        delete_all_cookie();
+                    }
+                    if (checkMsg(data.msg)) {
+                        for (var i = 0; i < data.version.length; i++) {
+                            var data_array = data.version[i];
+                            var id = data_array['sno_questionnarie_category'];
+                            var name = data_array['name'];
+                            btn_group_text += "<button type='button' class='btn btn-default version_btn' id='" + id + "'>" + name + "</button>";
+                            if (i == 0)
+                                version_id = id;
+                        }
+                        $("#btn_group").html(btn_group_text);
+                        $("#" + version_id).trigger("click");
+                        for (var i = 0; i < data.category.length; i++) {
+                            var data_array = data.category[i];
+                            var id = data_array['sno_questionnarie_group'];
+                            var name = data_array['name'];
+                            classification_option += "<option value='" + id + "'>" + name + "</option>";
+                            if (i == 0)
+                                classification_initial = id;
+                        }
+                        $("#classification").html(classification_option);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+
+
+        });
+
+        $(document).on('click', '.version_btn', function (event) {
+            $('#' + version_id).css("background", "#f4f4f4");
+            $(this).css("background", "LightGrey");
+            version_id = this.id;
+            show_table();
+        });
+
+        function option_text(value) {
+            var x = document.getElementById("multi_option");
+            if (value === "1") {
+                x.disabled = false;
+                x.placeholder = "  題目請以逗號隔開，ex.長庚校區,嘉義校區)";
+            } else {
+                x.disabled = true;
+                x.placeholder = "  disabled";
+            }
+        }
+
+        function show_table() {
+            var table = $('#example1').DataTable();
+            table.clear().draw();
+            $.ajax({
+                type: "POST",
+                url: "phpMod/question_get_list.php",
+                async: false,
+                dataType: "json",
+                data: { token: token, q_category: version_id },
+                success: function (data) {
+                    if (!checkMsg(data.msg)) {
+                        delete_all_cookie();
+                    }
+                    if (checkMsg(data.msg)) {
+                        for (var i = 0; i < data.out.length; i++) {
+                            var data_array = data.out[i];
+                            var id = data_array['q_pk'];
+                            var order = data_array['order'];
+                            var type = data_array['a_type'];
+                            var group = data_array['q_group'];
+                            var title = data_array['q_title'];
+                            var topic = data_array['topic'];
+
+                            table.row.add([
+                                id,
+                                "<input type='checkbox' id='" + id + "' name='checkbox'/>",
+                                order,
+                                type,
+                                group,
+                                title,
+                                topic
+                            ]).draw();
+
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+        }
+
+        $("#btnadd").click(function (e) {
+            var question_order = document.getElementById("question_order").value;
+            var question_type = document.getElementById("question_type").value;
+            var classification = document.getElementById("classification").value;
+            var question_name = document.getElementById("question_name").value;
+            var multi_option = document.getElementById("multi_option").value;
+            var canadd = true;
+            if (question_order == '' || question_type == '' || classification == '' || question_name == '') {
+                canadd = false;
+            }
+            if (question_type == 1) {
+                if (multi_option == '')
+                    canadd = false;
+            }
+            if (canadd == false)
+                alert("Please fill all the information");
+            else if (canadd) {
+                var table = $('#example1').DataTable();
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/question_insert.php",
+                    async: false,
+                    dataType: "json",
+                    data: { token: token, sno_questionnarie_group: classification, q_category: version_id, question_type: question_type, q_orders: question_order, titile: question_name, list: multi_option },
+                    success: function (data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            show_table();
+                            document.getElementById("question_order").value = '';
+                            document.getElementById("question_type").value = 0;
+                            $('#classfication').val(classification_initial);
+                            document.getElementById("question_name").value = '';
+                            document.getElementById("multi_option").value = '';
+                            $('#question_type').trigger("change");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            }
+        });
+
+        $('#example1 tbody').on('click', 'input[name="checkbox"]', function (e) {
+            var table = $('#example1').DataTable();
+            var $row = $(this).closest('tr');
+            if (this.checked) {
+                $row.addClass('selected');
+            }
+            else {
+                $row.removeClass('selected');
+            }
+            updateDataTableSelectAllCtrl(table);
+        });
+        
+        $("#CheckAll").click(function () {
+            var table = $('#example1').DataTable();
+            if ($("#CheckAll").prop("checked")) {
+                $("input[name='checkbox']").each(function () {
+                    $(this).prop("checked", true);
+                    $(this).closest('tr').addClass('selected');
+                })
+            }
+            else {
+                $("input[name='checkbox']").each(function () {
+                    $(this).prop("checked", false);
+                    $(this).closest('tr').removeClass('selected');
+                })
+            }
+        });
+        
+        $("#btndelete").click(function (e) {
+            var delete_bool = confirm("確定要勾選資料?");
+            if (delete_bool == true) {
+                var table = $('#example1').DataTable();
+                var $table = table.table().node();
+                var $chkbox_all = $('tbody input[name="checkbox"]', $table);
+                var $chkbox_checked = $('tbody input[name="checkbox"]:checked', $table);
+                var chkbox_select_all = $('thead input[id="CheckAll"]', $table).get(0);
+                var Data = table.rows('.selected').data();
+                var id = "0";
+                for (var i = 0; i < Data.length; i++) {
+                    if (id == "0")
+                        id = Data[i][0];
+                    else
+                        id += "," + Data[i][0];
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/question_delete.php",
+                    async: false,
+                    dataType: "json",
+                    data: { token: token, sno_questionorder: id },
+                    success: function (data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            show_table();
+                            chkbox_select_all.checked = false;
+                            chkbox_select_all.indeterminate = false;
+                        }
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            }
+        });
+        
+        function updateDataTableSelectAllCtrl(table) {
+            var $table = table.table().node();
+            var $chkbox_all = $('tbody input[name="checkbox"]', $table);
+            var $chkbox_checked = $('tbody input[name="checkbox"]:checked', $table);
+            var chkbox_select_all = $('thead input[id="CheckAll"]', $table).get(0);
+            
+            if ($chkbox_checked.length === 0) {
+                chkbox_select_all.checked = false;
+                if ('indeterminate' in chkbox_select_all) {
+                    chkbox_select_all.indeterminate = false;
+                }
+            } else if ($chkbox_checked.length === $chkbox_all.length) {
+                chkbox_select_all.checked = true;
+                if ('indeterminate' in chkbox_select_all) {
+                    chkbox_select_all.indeterminate = false;
+                }
+            } else {
+                chkbox_select_all.checked = true;
+                if ('indeterminate' in chkbox_select_all) {
+                    chkbox_select_all.indeterminate = true;
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

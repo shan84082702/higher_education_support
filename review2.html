@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <title>高教深耕彙整平台|診斷小組審查</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="bower_components/jvectormap/jquery-jvectormap.css" rel="stylesheet">
+    <link href="dist/css/AdminLTE.min.css" rel="stylesheet">
+
+    <link href="dist/css/skins/_all-skins.min.css" rel="stylesheet">
+    <link href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
+        rel="stylesheet">
+    <style>
+        .message {
+            border-style: solid;
+            border-color: gray;
+            border-radius: 20px;
+            width: auto;
+        }
+
+        .popup {
+            border-style: solid;
+            border-color: gray;
+            width: auto;
+        }
+
+        .deletebutton {
+            margin-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+    <div class="wrapper">
+        <header class="main-header">
+            <a class="logo" href="index.html" style="height: 64px">
+                <span class="logo-mini"><b></b></span>
+                <span class="logo-lg"><b>高教深耕彙整平台</b></span></a>
+            <nav class="navbar navbar-static-top">
+                <a class="sidebar-toggle" data-toggle="push-menu" href="#" role="button" style="height: 64px;"><span
+                        class="sr-only">Toggle navigation</span></a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a><span class="hidden-xs" style="font-size:20px" id="username">User Name&nbsp;</span>
+                                <span class="hidden-xs" style="font-size:16px" id="usertitle">User Title&nbsp;</span>
+                                <button class="btn" style="color:#707070" type="button" id="logout_btn">登出</button></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="main-sidebar">
+
+            <section class="sidebar">
+                <ul id="menu" class="sidebar-menu" data-widget="tree">
+
+                </ul>
+            </section>
+        </aside>
+        <div class="content-wrapper" style="min-height: 960px;">
+
+            <br>
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <a style="font-size: 30px;color: #000000">診斷小組審查</a> <a
+                            style="margin-left:20px;font-size: 24px;color:gray;"></a>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <u style="font-size: 24px;color:gray;"></u>
+                        </div>
+
+                    </div>
+                </div><br>
+            </section>
+            <section class="content">
+
+                <div class="container-fluid">
+                    <form enctype="multipart/form-data" method="post" name="fileinfo">
+                        <div class="row message">
+                            <div style="margin-left:10px">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-sm-12" id="big_title1">
+                                            <p style="margin-bottom:0"><span
+                                                    style="color:gray;font-size:25px">教育部指標內容</span></p>
+                                            <hr
+                                                style="width: 100%; height: 1.5px; border: none; background-color: #8C8C8C; margin-top: 0%;">
+                                        </div>
+                                        <div class="row">
+                                            <div class="container-fluid">
+                                                <div class="col-sm-3" style="text-align:left">
+                                                    <span style="font-size: 18px">指標類型 :</span>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <span id="edu_class_name" style="font-size: 18px"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="container-fluid">
+                                                <div class="col-sm-3" style="text-align:left">
+                                                    <span style="font-size: 18px">指標說明 :</span>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <span id="edu_detail" style="font-size: 18px"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="container-fluid">
+                                                <div class="col-sm-3" style="text-align:left">
+                                                    <span style="font-size: 18px">部訂指標項目 :</span>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <span id="edu_opt_name" style="font-size: 18px"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="container-fluid">
+                                                <div class="col-sm-3" style="text-align:left">
+                                                    <span style="font-size: 18px">衡量基準/計算公式（量化）檢核方式（質化） :</span>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <span id="edu_rule" style="font-size: 18px"> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="container-fluid">
+                                                <div class="col-sm-3" style="text-align:left">
+                                                    <span style="font-size: 18px">管考欄位 :</span>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <span id="manage" style="font-size: 18px"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12" id="big_title2">
+                                            <p style="margin-bottom:0"><span
+                                                    style="color:gray;font-size:25px">執行策略內容</span></p>
+                                            <hr
+                                                style="width: 100%; height: 1.5px; border: none; background-color: #8C8C8C; margin-top: 0%;">
+                                        </div>
+                                        <div class="row">
+                                            <div class="container-fluid">
+                                                <div class="col-sm-3" style="text-align:left">
+                                                    <span style="font-size: 18px">名稱 :</span>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <span id="strategies_name" style="font-size: 18px"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="container-fluid">
+                                                <div class="col-sm-3" style="text-align:left">
+                                                    <span style="font-size: 18px">負責教師 :</span>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <span id="supervior_name" style="font-size: 18px"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="container-fluid">
+                                                <div class="col-sm-3" style="text-align:left">
+                                                    <span style="font-size: 18px">目標 :</span>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <span id="strategies_aim" style="font-size: 18px"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div><br>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row message">
+                        <div style="margin-left:10px">
+                            <h1 style="font-size: 20px">活動報告列表</h1><br>
+                            <div class="box-body">
+                                <table class="table table-bordered table-striped" id="example2">
+                                    <thead>
+                                        <tr>
+                                            <th>報告書名稱(活動或課程名稱)</th>
+                                            <th>更新時間</th>
+                                            <th>狀態</th>
+                                            <th>是否已填寫問卷</th>
+                                            <th>活動期限</th>
+                                            <th>功能</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-table">
+        <div class="modal-dialog" style="width:800px">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#5991C9">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" style="color:white">詳細資料</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <table class="table table-bordered table-striped" id="example2">
+                            <thead>
+                                <tr>
+                                    <th>報告書名稱(活動或課程名稱)</th>
+                                    <th>更新時間</th>
+                                    <th>狀態</th>
+                                    <th>是否已填寫問卷</th>
+                                    <th>活動期限</th>
+                                    <th>功能</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog" style="width:1000px">
+            <div class="container-fluid">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color:#5991C9">
+                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" style="color:white">審核紀錄</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="box-body">
+                            <div class="row modal_table" id="msgandsummit">
+                                <div class="col-sm-9" style="margin-bottom:2%">
+                                    <span style="font-size:24px">建議 :</span>
+                                    <input id="recomand" size="80" type="text" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" id="send_msg" style="margin-top:3%" type="button">
+                                        送出
+                                    </button>
+
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row" style="border-style:solid;border-color:#707070;">
+                                <div style="margin-left: 2%;margin-right: 2%;margin-top: 2%;margin-bottom: 2%">
+                                    <table class="table table-bordered table-striped" id="message_table">
+                                        <thead>
+                                            <tr>
+                                                <th>送件時間</th>
+                                                <th>送件者</th>
+                                                <th>收件者</th>
+                                                <th>額外訊息</th>
+                                                <th>狀態</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" type="button">關閉</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+
+    <script src="dist/js/adminlte.min.js"></script>
+
+    <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+
+    <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="dist/js/demo.js"></script>
+    <script src="dist/js/cookie.js"></script>
+    <script>
+        $(function () {
+            var opt = {
+                "oLanguage": {
+                    "sProcessing": "處理中...",
+                    "sLengthMenu": "顯示 _MENU_ 項結果",
+                    "sZeroRecords": "沒有匹配結果",
+                    "sInfo": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                    "sInfoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                    "sInfoFiltered": "(從 _MAX_ 項結果過濾)",
+                    "sSearch": "搜尋:",
+                    "oPaginate": {
+                        "sFirst": "首頁",
+                        "sPrevious": "上一頁",
+                        "sNext": "下一頁",
+                        "sLast": "尾頁"
+                    }
+                }
+            };
+            $('#example1').DataTable(opt)
+
+            $('#example2').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': false,
+                'ordering': false,
+                'info': true,
+                'autoWidth': false,
+                'oLanguage': {
+                    "sProcessing": "處理中...",
+                    "sLengthMenu": "顯示 _MENU_ 項結果",
+                    "sZeroRecords": "沒有匹配結果",
+                    "sInfo": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                    "sInfoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                    "sInfoFiltered": "(從 _MAX_ 項結果過濾)",
+                    "sSearch": "搜尋:",
+                    "oPaginate": {
+                        "sFirst": "首頁",
+                        "sPrevious": "上一頁",
+                        "sNext": "下一頁",
+                        "sLast": "尾頁"
+                    }
+                }
+            })
+            $('#message_table').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': false,
+                'ordering': false,
+                'info': true,
+                'autoWidth': false,
+                'oLanguage': {
+                    "sProcessing": "處理中...",
+                    "sLengthMenu": "顯示 _MENU_ 項結果",
+                    "sZeroRecords": "沒有匹配結果",
+                    "sInfo": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                    "sInfoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                    "sInfoFiltered": "(從 _MAX_ 項結果過濾)",
+                    "sSearch": "搜尋:",
+                    "oPaginate": {
+                        "sFirst": "首頁",
+                        "sPrevious": "上一頁",
+                        "sNext": "下一頁",
+                        "sLast": "尾頁"
+                    }
+                }
+            })
+
+
+        })
+
+        function detail_fun(pid) {
+            var token = GetCookie("token");
+            SetCookie("pid", pid, 1, domain);
+            document.location.href = 'result3.html';
+        }
+        function review_fun(pid) {
+            var token = GetCookie("token");
+            SetCookie("pid", pid, 1, domain);
+        }
+        $(document).ready(function () {
+            var message_table = $("#message_table").DataTable();
+            var table = $('#example2').DataTable();
+            var user_name = GetCookie("user_name");
+            $("#username").text(user_name);
+            var usertitle = GetCookie("role_name");
+            $('#usertitle').text(usertitle);
+            var token = GetCookie("token");
+            var strategies_id = GetCookie("strategies_id");
+
+            $.ajax({
+                type: "POST",
+                url: "phpMod/menu.php",
+                async: false, ///非同步執行
+                dataType: "json",
+                data: {
+                    token: token,
+                    page: 3,
+                    subpage: 1
+                },
+                success: function (data) {
+                    if (checkMsg(data.msg)) {
+                        var menu = data.remenu;
+                        $("#menu").append(menu);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            })
+
+            $.ajax({
+                type: "POST",
+                url: "phpMod/summary_get_content.php",
+                async: false, ///非同步執行
+                dataType: "json",
+                data: {
+                    token: token,
+                    sno_option_strategies: strategies_id
+                },
+                success: function (data) {
+
+                    if (checkMsg(data.msg)) {
+                        console.log(data);
+                        $("#edu_class_name").text(data.out1['edu_class_name']);
+                        $("#edu_detail").text(data.out1['edu_detail']);
+                        $("#edu_opt_name").text(data.out1['edu_opt_name']);
+                        $("#strategies_aim").text(data.out1['strategies_aim']);
+                        $("#supervior_name").text(data.out1['supervior_name']);
+                        $("#strategies_name").text(data.out1['strategies_name']);
+                        $("#manage").text(data.out1['manage']);
+                        var summary_qlength = data.out2.length;
+                        var act_qlength = data.out3.length;
+
+                        for (var i = summary_qlength - 1; i >= 0; --i) {
+                            if (data.out2[i]['type'] == "0") {
+                                $("#title3").after('<div class="row"><div class="col-sm-6" style="text-align:left">' +
+                                    '<span style="font-size: 18px">管考指標： ' + data.out2[i]['name'] +
+                                    '<\/span><\/div><div class = "col-sm-6"><span style="font-size: 18px">執行內容： </span><textarea rows="4" style="width:100%" id="' + data.out2[i]['sno_strategies_summary'] +
+                                    '">' + data.out2[i]['results'] + '<\/textarea><\/div><\/div><br>'
+
+                                );
+                            } else {
+                                var filepath = data.out2[i]['results'];
+                                var filename = filepath.split('/');
+                                filename = filename[filename.length - 1];
+                                $("#title3").after('<div class="row"><div class="col-sm-3" style="text-align:left">' +
+                                    '<span style="font-size: 18px">管考指標： ' + data.out2[i]['name'] +
+                                    '<\/span><\/div><div class="col-sm-3"><span style="font-size: 18px">執行內容： </span><a href="' + filepath +
+                                    '">' + filename + '</a></div><div class = "col-sm-6"><input class"files" type="file" name="i' + data.out2[i]['sno_strategies_summary'] +
+                                    '"><\/div><\/div><br>'
+                                );
+                            }
+                        }
+                        for (var i = act_qlength - 1; i >= 0; --i) {
+                            $("#title4").after('<div class="row"><div class="col-sm-12" style="text-align:left">' +
+                                '<span style="font-size: 18px ;font-weight:bold;">' + data.out3[i]['name'] + " : " +
+                                '<\/span><\/div><div class = "col-sm-6"><span style="font-size: 18px">' + data.out3[i]['question'] +
+                                '<\/span><\/div>' +
+                                '<div class = "col-sm-6"><span style="font-size: 18px">' + data.out3[i]['results'] +
+                                '<\/span><\/div>' +
+                                '<\/div><br>'
+                            );
+
+                        }
+
+
+                    }
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+            $("#save_btn").click(function () {
+                var token = GetCookie("token");
+                var result = [];
+                var sno_option_strategies_summary = [];
+                $('textarea').each(function (index) {
+                    result[index] = $(this).val();
+                    sno_option_strategies_summary[index] = $(this).attr('id');
+
+                });
+
+                var results = JSON.stringify({
+                    sno_option_strategies_summary: sno_option_strategies_summary,
+                    result: result
+                });
+
+                var test = JSON.parse(results);
+
+                var form = document.forms.namedItem("fileinfo");
+
+                form.addEventListener('submit', function (ev) {
+                    oData = new FormData(form);
+                    oData.append("token", token);
+                    oData.append("results", results);
+
+                    var oReq = new XMLHttpRequest();
+                    oReq.open("POST", "phpMod/summary_update.php", true);
+                    oReq.onload = function (oEvent) {
+                        if (oReq.status == 200) {
+                            alert("更新成功");
+                            document.location.href = 'report.html';
+                        } else {
+
+                        }
+                    };
+
+                    oReq.send(oData);
+
+                    ev.preventDefault();
+                }, false);
+            });
+            var sno_option_strategies = GetCookie("strategies_id");
+            $.ajax({
+                type: "POST",
+                url: "phpMod/summary_get_report.php",
+                async: false, ///非同步執行
+                dataType: "json",
+                data: {
+                    token: token,
+                    sno_option_strategies: sno_option_strategies
+                },
+                success: function (data) {
+                    if (!checkMsg(data.msg)) {
+                        delete_all_cookie();
+                    }
+                    if (checkMsg(data.msg)) {
+
+                        for (var i = 0; i < data.out.length; i++) {
+                            var data_array = data.out;
+                            var pid = data_array[i]['p_id'];
+                            var project_name = data_array[i]['p_name'];
+                            var update_time = data_array[i]['update'];
+                            var estimated_date = data_array[i]['limted_date'];
+                            var is_filled_result = data_array[i]['isfilled'];
+                            var review_state = data_array[i]['type'];
+
+                            table.row.add([
+                                project_name,
+                                update_time,
+                                review_state,
+                                is_filled_result,
+                                estimated_date,
+                                "<button type='button' class='btn bg-olive btn-sm' onClick=detail_fun(this.id) id=" + pid + " value='" + pid + "'>詳細資料</button>" +
+                                "<button type='button' class='btn bg-purple btn-sm' onClick=review_fun(this.id) id=" + pid + " value='" + pid + "'data-toggle='modal' data-target='#modal-default'>審查建議</button>"
+                            ]).draw(false);
+
+                        }
+
+
+                    }
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+            $("#logout_btn").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/signout_serve.php",
+                    async: false, ///非同步執行
+                    dataType: "json",
+                    data: {
+                        token: token
+                    },
+                    success: function (data) {
+                        if (checkMsg(data.msg)) {
+
+                            delete_all_cookie();
+                        }
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                })
+            });
+
+            //送出額外訊息
+            $("#send_msg").click(function () {
+                var pid = GetCookie("pid");
+                var message = $("#recomand").val();
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/letter_record.php",
+                    async: false, ///非同步執行
+                    dataType: "json",
+                    data: {
+                        token: token,
+                        sno_option_projects: pid,
+                        message: message
+                    },
+                    success: function (data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            alert("訊息送出");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+                message_table.clear();
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/letter_get_list.php",
+                    async: false, ///非同步執行
+                    dataType: "json",
+                    data: {
+                        token: token,
+                        sno_option_projects: pid
+                    },
+                    success: function (data) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            if (data.issupervisor != 1) {
+                                $("#send_access").hide();
+                            }
+                            for (var i = 0; i < data.out.length; i++) {
+                                var data_array = data.out;
+                                var created_at = data_array[i]["created_at"];
+                                var source = data_array[i]["source"];
+                                var exmsg = data_array[i]["exmsg"];
+                                var type = data_array[i]["type"];
+                                var target = data_array[i]["target"];
+                                message_table.row.add([created_at, source, target, exmsg, type]).draw(false);
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

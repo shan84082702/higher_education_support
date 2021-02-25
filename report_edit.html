@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="dist/js/cookie.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>高教深耕彙整平台|報表管理</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
+        .message {
+            border-style: solid;
+            border-color: gray;
+            margin-left: 20px;
+            width: auto;
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <form>
+        <div class="wrapper">
+            <header class="main-header">
+                <a href="index.html" class="logo" style="height: 64px">
+                    <span class="logo-mini"><b></b></span>
+                    <span class="logo-lg"><b>高教深耕彙整平台</b></span>
+                </a>
+                <nav class="navbar navbar-static-top">
+                    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" style="height: 64px;">
+                        <span class="sr-only">Toggle navigation</span>
+                    </a>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown user user-menu">
+                                <a>
+                                    <span class="hidden-xs" style="font-size:20px" id="username">User Name&nbsp;</span>
+                                    <span class="hidden-xs" style="font-size:16px" id="usertitle">User Title&nbsp;</span>
+                                    <button type="button" class="btn" style="color:#707070" id="logout_btn"> 登出</button>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </nav>
+            </header>
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <ul id="menu" class="sidebar-menu" data-widget="tree">
+                    </ul>
+                </section>
+            </aside>
+
+            <div class="content-wrapper" style="min-height: 960px;">
+                <br>
+                <section class="content-header">
+                    <h1 style="margin-left:20px;font-size: 30px">報表管理</h1>
+                </section>
+                <section class="content" style="margin-left:10px;margin-right:10px;">
+                    <small style="margin-left:20px; color:gray">執行內容與管考指標(B)對應教育部管考欄位(A)-總結表匯出</small>
+                    <hr style="width: 98%; height: 1.5px; border: none; background-color: #8C8C8C; margin-top: 10px; margin-bottom: 15px;">
+                    <div style="border-radius:5px; border-style:solid; border-color:#8C8C8C;margin-left:20px;margin-right:20px;">
+                        <form>
+                            <div class="box-body" style="margin-left:1%;margin-top:4px;margin-bottom:4px;">
+                                <div class="form-class">
+                                    <label for="inputEmail3">年度：</label>
+                                    <select style="height:30px;width:6%;margin-left:0.5%;margin-right:1%;" id="index_year">
+                                    </select>
+                                    <a class="btn btn-primary" style="margin-right:1%;" id="csv_teacher">CSV匯出(含負責教師)</a>
+                                    <a class="btn btn-primary" id="csv_no_teacher">CSV匯出(不含負責教師)</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+
+            <footer class="main-footer">
+                <div class="pull-right hidden-xs">
+                    <b>Version</b> 2.4.0
+                </div>
+                <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights reserved.
+            </footer>
+            <div class="control-sidebar-bg"></div>
+
+        </div>
+    </form>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="dist/js/adminlte.min.js"></script>
+    <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="dist/js/demo.js"></script>
+    <script>
+        var y = new Date();
+        var year_now = y.getFullYear() - 1911;
+        var token = GetCookie("token");
+        $(document).ready(function() {
+            var user_name = GetCookie("user_name");
+            $("#username").text(user_name);
+            var usertitle = GetCookie("role_name");
+            $('#usertitle').text(usertitle);
+            checkToken();
+            $("#logout_btn").click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: "phpMod/signout_serve.php",
+                    async: false,
+                    dataType: "json",
+                    data: {
+                        token: token
+                    },
+                    success: function(data) {
+                        if (checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                })
+            });
+
+            $('#example1').DataTable({
+                'paging': true,
+                'lengthChange': true,
+                'searching': false,
+                'ordering': false,
+                'info': true,
+                'autoWidth': true,
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false,
+                }],
+                'oLanguage': {
+                    "sProcessing": "處理中...",
+                    "sLengthMenu": "顯示 _MENU_ 項結果",
+                    "sZeroRecords": "沒有匹配結果",
+                    "sInfo": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                    "sInfoEmpty": "顯示第 0 至 0 項結果，共 0 項",
+                    "sInfoFiltered": "(從 _MAX_ 項結果過濾)",
+                    "sSearch": "搜尋:",
+                    "oPaginate": {
+                        "sFirst": "首頁",
+                        "sPrevious": "上一頁",
+                        "sNext": "下一頁",
+                        "sLast": "尾頁"
+                    }
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "phpMod/menu.php",
+                async: false,
+                dataType: "json",
+                data: {
+                    token: token,
+                    page: 5,
+                    subpage: 0
+                },
+                success: function(data) {
+                    if (!checkMsg(data.msg)) {
+                        delete_all_cookie();
+                    }
+                    if (checkMsg(data.msg)) {
+                        var menu = data.remenu;
+                        $("#menu").append(menu);
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            })
+            $.ajax({
+                type: "POST",
+                url: "phpMod/spindles_get_year.php",
+                async: false,
+                dataType: "json",
+                data: {
+                    token: token
+                },
+                success: function(data) {
+                    if (checkMsg(data.msg)) {
+                        if (!checkMsg(data.msg)) {
+                            delete_all_cookie();
+                        }
+                        if (checkMsg(data.msg)) {
+                            var Sinner = "";
+                            for (var i = 0; i < data.out.length; i++) {
+                                var data_array = data.out[i];
+                                var database_year = data_array['year'];
+                                Sinner = Sinner + '<option value=' + database_year + '>' + database_year + '</option>';
+                            }
+                            $("#index_year").html(Sinner);
+                            $("#index_year").val(year_now);
+                        }
+
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+        });
+
+
+        $("#csv_teacher").click(function(e) {
+            var year = $('#index_year').val();
+            $.ajax({
+                type: "POST",
+                url: "phpMod/csv_out.php",
+                async: false,
+                dataType: "json",
+                data: {
+                    token: token,
+                    year: year
+                },
+                success: function(data) {
+                    if (!checkMsg(data.msg)) {
+                        delete_all_cookie();
+                    }
+                    if (checkMsg(data.msg)) {
+                        location.href = data.url;
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+        });
+
+        $("#csv_no_teacher").click(function(e) {
+            var year = $('#index_year').val();
+            $.ajax({
+                type: "POST",
+                url: "phpMod/csv_out_no.php",
+                async: false,
+                dataType: "json",
+                data: {
+                    token: token,
+                    year: year
+                },
+                success: function(data) {
+                    if (!checkMsg(data.msg)) {
+                        delete_all_cookie();
+                    }
+                    if (checkMsg(data.msg)) {
+                        location.href = data.url;
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

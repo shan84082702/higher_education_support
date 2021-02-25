@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>CGUST| Log in</title>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+
+        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
+
+        <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css" />
+
+        <link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
+
+        <link rel="stylesheet" href="plugins/iCheck/square/blue.css" />
+
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
+        />
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+
+    <body class="hold-transition login-page">
+        <div class="login-box">
+            <div class="login-logo">
+                <a href="index.html"><b>長庚科技大學</b></a>
+            </div>
+            <div class="login-box-body">
+                <form action="index.html" method="post">
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" placeholder="帳號" id="login_username" />
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="password" class="form-control" placeholder="密碼" id="password" />
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9"><span style="color:gray">預設密碼為帳號後五碼</span></div>
+                        <div class="col-sm-3"><a href="fill_info.html">忘記密碼</a></div>
+                    </div>
+                </form>
+
+                <div class="social-auth-links text-center">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat" id="login_btn">登入</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="plugins/iCheck/icheck.min.js"></script>
+        <script src="dist/js/cookie.js"></script>
+        <script>
+            var domain = window.location.hostname;
+
+            $(document).ready(function() {
+                $("#login_btn").click(function() {
+                    var account = $("#login_username").val();
+                    var passwd = $("#password").val();
+                    if (account.trim() == "") {
+                        alert("請輸入帳號");
+                        eval("document.getElementById('login_username').focus()");
+                        return false;
+                    }
+                    if (passwd.trim() == "") {
+                        alert("請輸入密碼");
+                        eval("document.getElementById('password').focus()");
+                        return false;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "phpMod/signin_serve_new.php",
+                        async: false, ///非同步執行
+                        dataType: "json",
+                        data: { account: account, passwd: passwd },
+                        success: function(data) {
+                            
+                            if (checkMsg(data.msg)) {
+                                SetCookie("token", data.outt.token, 1, domain);
+                                SetCookie("user_name", data.outt.name, 1, domain);
+                                SetCookie("role_name", data.outt.role_name, 1, domain);
+                                alert(data.msg);
+                                document.location.href = "index.html";
+                            } else {
+                                alert("帳號密碼錯誤");
+                            }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
